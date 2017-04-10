@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@drawable/item_selector"
+    android:elevation="5dp"
+    android:padding="10dp"
+    >
+
+<ImageView
+    android:id="@+id/icon"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginRight="12dp"
+    android:contentDescription="TODO"
+    android:src="@drawable/gear" />
+
+<TextView
+    android:id="@+id/part_model"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_toLeftOf="@+id/part_quantity"
+    android:layout_above="@+id/exInfo"
+    android:layout_alignWithParentIfMissing="true"
+    android:layout_toRightOf="@id/icon"
+    android:gravity="center_vertical"
+    android:text="model"
+    android:textSize="16sp" />
+
+
+<LinearLayout
+    android:id="@+id/exInfo"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_toRightOf="@id/icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/part_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:text="no"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/part_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="category"
+        android:textSize="12sp" />
+
+</LinearLayout>
+
+
+
+<TextView
+    android:id="@+id/part_quantity"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true"
+    android:gravity="center"
+    android:text="1234"/>
+
+</RelativeLayout>

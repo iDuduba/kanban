@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="stock_out_type">
+        <item>正常出库</item>
+        <item>盘亏</item>
+        <item>额外出库</item>
+        <item>调货出库</item>
+        <item>供应商退货出库</item>
+    </string-array>
+</resources>

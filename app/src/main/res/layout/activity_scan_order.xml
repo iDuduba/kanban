@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="wang.laic.kanban.ScanOrderActivity">
+
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/orderNo"
+        android:layout_alignStart="@+id/orderTimes"
+        android:textSize="16sp"
+        android:text="@string/lab_input_order_no" />
+
+
+    <EditText
+        android:id="@+id/orderNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/orderTimes"
+        android:layout_alignStart="@+id/orderTimes"
+        android:layout_marginTop="12dp"
+        android:hint="@string/hint_order_no"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+
+    <ImageButton
+        android:id="@+id/scannerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_toRightOf="@id/orderNo"
+        android:layout_alignBottom="@id/orderNo"
+        app:srcCompat="@drawable/barcode_scanner" />
+
+
+    <EditText
+        android:id="@+id/orderTimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="12dp"
+        android:hint="@string/hint_order_times"
+        android:ems="10"
+        android:inputType="number" />
+
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderTimes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/pwd_confirm" />
+
+</RelativeLayout>

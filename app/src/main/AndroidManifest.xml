@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="wang.laic.kanban">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name=".KanbanApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScanPartActivity"
+            android:label="@string/title_activity_scan_part"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ScanActivity"
+            android:clearTaskOnLaunch="true"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <!-- android:theme="@style/AppCompatCaptureTheme" -->
+        <activity
+            android:name=".StockOutActivity"
+            android:parentActivityName=".ScanPartActivity" />
+        <activity
+            android:name=".PasswordActivity"
+            android:parentActivityName=".MainActivity">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <!-- <meta-data -->
+            <!-- android:name="android.support.PARENT_ACTIVITY" -->
+            <!-- android:value="wang.laic.kanban.MainActivity" /> -->
+        </activity>
+        <activity
+            android:name=".ScanOrderActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".OrderActivity"
+            android:parentActivityName=".ScanOrderActivity" />
+        <activity android:name=".OrderQueryActivity"
+            android:parentActivityName=".MainActivity"></activity>
+    </application>
+
+</manifest>

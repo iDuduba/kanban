@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/zxing_barcode_scanner"
+        app:zxing_preview_scaling_strategy="fitXY"
+        app:zxing_use_texture_view="true"/>
+    <!--app:zxing_scanner_layout="@layout/custom_barcode_scanner"-->
+    <!--app:zxing_framing_rect_width="200dp"-->
+    <!--app:zxing_framing_rect_height="200dp"-->
+
+    <ImageView
+        android:id="@+id/switch_flashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/selector_flash_button"
+        android:layout_centerHorizontal="true"
+        android:onClick="switchFlashlight"/>
+
+
+    <!-- Sample for a footer. Also add to DecoratedBarcodeView: android:layout_above="@+id/footer" -->
+    <!-- <TextView
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:text="Footer"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/> -->
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">Kanban</string>
+
+    <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
+    <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
+    <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
+    <string name="api_app_id">duduba</string>
+    <string name="api_secret_key">DgAewDold3V8fiUwxE0ANjjdinuQCSar</string>
+
+    <string name="lab_customer_list">请选择要处理的客户</string>
+    <string name="lab_password_change">修改密码</string>
+    <string name="lab_order_query">订单查询</string>
+    <string name="lab_stock_in">货物入库</string>
+    <string name="lab_stock_out">货物出库</string>
+    <string name="lab_stock_in_cancel">撤销入库</string>
+    <string name="lab_stock_flow_query">出入库查询</string>
+
+    <string name="lab_confirm_stock_in">确定入库</string>
+    <string name="lab_confirm_stock_out">确定出库</string>
+    <string name="lab_revoke_stock_in">撤销入库</string>
+
+
+    <!-- Strings related to login -->
+    <string name="title_activity_login">登录</string>
+
+    <string name="prompt_user">用户名</string>
+    <string name="prompt_password">口令 (可选)</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_cancel_sign_in">取消</string>
+    <string name="action_sign_in_short">登录</string>
+    <string name="error_invalid_user">用户名无效</string>
+    <string name="error_invalid_password">口令太短</string>
+    <string name="error_incorrect_password">口令不正确</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="device_register"><u>新设备注册</u></string>
+    <string name="forget_password"><u>忘记密码</u></string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="title_activity_scan_part">单品出库</string>
+    <string name="title_activity_stock_out">单品出库明细确认</string>
+    <string name="title_activity_order">订单明细</string>
+    <string name="title_activity_order_in">订单入库</string>
+    <string name="title_activity_order_revoked">订单入库撤销</string>
+    <string name="title_activity_order_query">订单查询</string>
+
+    <string name="prompt_select_customer">选择客户</string>
+    <string name="prompt_select_stock_type">选择出库类型</string>
+
+    <string name="turn_on_flashlight">打开闪光灯</string>
+    <string name="turn_off_flashlight">关闭闪光灯</string>
+    <string name="scan_status_text">请扫描要出库的单品型号二维码</string>
+
+
+    <string name="prompt_delete_item">删除记录？</string>
+    <string name="prompt_delete">删除</string>
+
+    <string name="prompt_stock_out_1">共计：%d项</string>
+    <string name="prompt_stock_out_2">总数量：%d件</string>
+
+
+    <string name="lab_input_order_no">请扫描或手工输入订单号</string>
+    <string name="hint_order_no">订单号</string>
+    <string name="hint_order_times">次数</string>
+
+    <string name="prompt_order_no">订单号:%s</string>
+    <string name="prompt_order_times">次数:%d</string>
+    <string name="prompt_order_total_amount">总数量:%d件</string>
+    <string name="prompt_order_status">状态:%s</string>
+    <string name="prompt_order_delivery_date">发货日期:%s</string>
+    <string name="prompt_order_arrival_date">到货日期:%s</string>
+
+
+    <string name="add">新增</string>
+    <string name="reset">重置</string>
+    <string name="about">关于</string>
+    <string name="exit">退出</string>
+
+    <string name="loading">载入中...</string>
+
+
+    <string name="pwd_change_password">密码修改</string>
+    <string name="pwd_old_password">旧密码</string>
+    <string name="pwd_new_password">新密码</string>
+    <string name="pwd_retry_password">再输一遍</string>
+    <string name="pwd_confirm">确认</string>
+    <string name="pwd_err_invalid_retry_password">密码不一致</string>
+    <string name="pwd_err_invalid_password">密码太短</string>
+
+</resources>
