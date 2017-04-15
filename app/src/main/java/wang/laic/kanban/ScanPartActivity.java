@@ -2,10 +2,9 @@ package wang.laic.kanban;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,13 +40,13 @@ import wang.laic.kanban.network.message.Question;
 
 public class ScanPartActivity extends BaseActivity {
 
-    @BindView(R.id.barcode_scanner) DecoratedBarcodeView barcodeView;
-    @BindView(R.id.part_model) TextView modelView;
-    @BindView(R.id.part_no) TextView partNoView;
-    @BindView(R.id.part_category) TextView categoryView;
-    @BindView(R.id.part_stock) TextView stockView;
-    @BindView(R.id.select_out_type) Spinner stockTypeView;
-    @BindView(R.id.quantity) EditText quantityView;
+    @BindView(R.id.barcode_scanner) DecoratedBarcodeView viewBarcodeScanner;
+    @BindView(R.id.tv_part_model) TextView tvModel;
+    @BindView(R.id.tv_part_no) TextView tvPartNo;
+    @BindView(R.id.tv_part_category) TextView tvCategory;
+    @BindView(R.id.tv_part_stock) TextView tvStock;
+    @BindView(R.id.spinner_out_type) Spinner stockTypeView;
+    @BindView(R.id.et_quantity) EditText etQuantity;
 
     BeepManager beepManager;
 
@@ -100,8 +98,8 @@ public class ScanPartActivity extends BaseActivity {
             }
         });
 
-        barcodeView.decodeContinuous(callback);
-        barcodeView.setStatusText(getString(R.string.scan_status_text));
+        viewBarcodeScanner.decodeContinuous(callback);
+        viewBarcodeScanner.setStatusText(getString(R.string.scan_status_text));
 
         beepManager = new BeepManager(this);
     }
@@ -114,13 +112,13 @@ public class ScanPartActivity extends BaseActivity {
             }
 
             lastText = result.getText();
-            modelView.setText(lastText);
+            tvModel.setText(lastText);
 
             beepManager.playBeepSoundAndVibrate();
 
             okHttp_get_part(lastText);
 
-            barcodeView.pause();
+            viewBarcodeScanner.pause();
             //Added preview of scanned barcode
 //            ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
 //            imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
@@ -133,10 +131,8 @@ public class ScanPartActivity extends BaseActivity {
 
     private void okHttp_get_part(String model) {
         Map<String, Object> body = new HashMap<>();
-        KanbanApplication app = (KanbanApplication)getApplication();
-        Customer customer = (Customer)app.getParameter(Constants.KEY_CURRENT_CUSTOMER);
-        body.put("customerCode", customer.getCode());
-        body.put("model", model);
+        body.put("customerCode", getCurrentCustomer().getCode());
+        body.put("itemCode", model);
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -146,36 +142,48 @@ public class ScanPartActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueryPartEvent(PartAnswer event) {
         if(event.getCode() == 0) {
-            modelView.setText(event.getBody().getModel());
-            partNoView.setText(event.getBody().getPartNo());
-            categoryView.setText(event.getBody().getCategory());
-            stockView.setText("" + event.getBody().getQuantity());
+            List<Part> items = event.getBody();
+            if(items != null && items.size() > 0) {
+                tvModel.setText(items.get(0).getModel());
+                tvPartNo.setText(items.get(0).getPartNo());
+                tvCategory.setText(items.get(0).getCategory());
+                tvStock.setText("" + items.get(0).getQuantity());
+            }
+        } else {
+            Log.i(Constants.TAG, "code = " + event.getCode());
+            String errorMessage = event.getMessage();
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 
     public void triggerScan(View view) {
-        barcodeView.decodeSingle(callback);
+        viewBarcodeScanner.decodeSingle(callback);
     }
 
-    @OnClick(R.id.resume)
+    @OnClick(R.id.btn_resume)
     public void resume() {
-        mPart.setModel(modelView.getText().toString());
-        mPart.setPartNo(partNoView.getText().toString());
-        mPart.setCategory(categoryView.getText().toString());
-        mPart.setQuantity(Integer.parseInt(quantityView.getText().toString()));
+        mPart.setModel(tvModel.getText().toString());
+        mPart.setPartNo(tvPartNo.getText().toString());
+        mPart.setCategory(tvCategory.getText().toString());
+        mPart.setQuantity(Integer.parseInt(etQuantity.getText().toString()));
 
         mOuts.add(mPart);
         mPart = new Part();
 
-        modelView.setText(null);
-        partNoView.setText(null);
-        categoryView.setText(null);
-        stockView.setText(null);
+        tvModel.setText(null);
+        tvPartNo.setText(null);
+        tvCategory.setText(null);
+        tvStock.setText(null);
 
-        barcodeView.resume();
+        viewBarcodeScanner.resume();
     }
 
-    @OnClick(R.id.commit)
+    @OnClick(R.id.btn_commit)
     public void commit() {
         KanbanApplication app = (KanbanApplication)getApplication();
         app.setParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
@@ -188,13 +196,13 @@ public class ScanPartActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        barcodeView.resume();
+        viewBarcodeScanner.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        barcodeView.pause();
+        viewBarcodeScanner.pause();
     }
 
     @Override
@@ -205,7 +213,7 @@ public class ScanPartActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+        return viewBarcodeScanner.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
 

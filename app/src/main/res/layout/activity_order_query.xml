@@ -5,74 +5,149 @@
     android:layout_height="match_parent"
     tools:context="wang.laic.kanban.OrderQueryActivity">
 
-    <Button
-        android:id="@+id/date_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="Button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="23dp" />
-
-    <TextView
-        android:id="@+id/date_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/date_button"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="13dp"
-        android:layout_toEndOf="@+id/date_button"
-        android:text="TextView" />
-
     <LinearLayout
-        android:id = "@+id/header"
-        android:layout_width = "fill_parent"
-        android:layout_height = "wrap_content"
-        android:background = "#0000ff" >
+        android:id="@+id/queryZone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
 
-        <TextView
-            android:layout_width = "0dp"
-            android:layout_height = "wrap_content"
-            android:layout_weight = "1"
-            android:gravity = "center"
-            android:padding = "5dp"
-            android:text = "订单号"
-            android:textColor = "#ffffff" />
+        <RadioGroup
+            android:id="@+id/rg_order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radio_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部"
+                android:onClick="onOrderStatusRadioButtonClicked"
+                android:checked="true"/>
 
-        <TextView
-            android:layout_width = "0dp"
-            android:layout_height = "wrap_content"
-            android:layout_weight = "2"
-            android:gravity = "center"
-            android:padding = "5dp"
-            android:text = "发货次数"
-            android:textColor = "#ffffff"/>
+            <RadioButton
+                android:id="@+id/radio_way"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onOrderStatusRadioButtonClicked"
+                android:text="在途" />
 
-        <TextView
-            android:layout_width = "0dp"
-            android:layout_height = "wrap_content"
-            android:layout_weight = "1.5"
-            android:gravity = "center"
-            android:padding = "5dp"
-            android:text = "状态"
-            android:textColor = "#ffffff" />
+            <RadioButton
+                android:id="@+id/radio_aog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onOrderStatusRadioButtonClicked"
+                android:text="到货" />
 
-        <TextView
-            android:layout_width = "0dp"
-            android:layout_height = "wrap_content"
-            android:layout_weight = "1"
-            android:gravity = "center"
-            android:padding = "5dp"
-            android:text = "发货日期"
-            android:textColor = "#ffffff" />
+            <RadioButton
+                android:id="@+id/radio_revoked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onOrderStatusRadioButtonClicked"
+                android:text="撤销" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rg_date_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_week"
+                android:onClick="onDateRangeRadioButtonClicked"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radio_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_month"
+                android:onClick="onDateRangeRadioButtonClicked" />
+
+            <RadioButton
+                android:id="@+id/radio_3_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_3_month"
+                android:onClick="onDateRangeRadioButtonClicked" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_begin_date"
+                android:layout_weight="2"
+                android:text="@string/prompt_select_begin_date"
+                android:textColor="#b00000ff"
+                android:textSize="18sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_end_date"
+                android:layout_weight="2"
+                android:text="@string/prompt_select_end_date"
+                android:textColor="#b00000ff"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/search"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="检索" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id = "@+id/listview"
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/queryZone"
+        android:background="#0000cc" >
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "2"
+            android:text = "订单号" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "1.5"
+            android:text = "发货次数" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "1"
+            android:text = "状态" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "2"
+            android:text = "发货日期" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id = "@+id/orderList"
         android:layout_width = "match_parent"
-        android:layout_height = "wrap_content"
+        android:layout_height = "match_parent"
         android:layout_below="@id/header"
+        android:scrollbars="vertical"
         android:divider = "@null"/>
 
 </RelativeLayout>

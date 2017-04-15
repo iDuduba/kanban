@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<!--android:background="@drawable/item_selector">-->
+    <!--android:background="@color/colorCell">-->
+
+    <TextView
+        android:id = "@+id/orderNo"
+        style="@style/ListCell"
+        android:textColor="@color/dark_gray"
+        android:layout_weight = "2" />
+    <!--android:background = "@drawable/cell_shape"-->
+
+    <TextView
+        android:id = "@+id/orderTimes"
+        style="@style/ListCell"
+        android:textColor="@color/dark_gray"
+        android:layout_weight = "1.5" />
+
+    <TextView
+        android:id = "@+id/orderStatus"
+        style="@style/ListCell"
+        android:textColor="@color/dark_gray"
+        android:layout_weight = "1" />
+
+    <TextView
+        android:id = "@+id/deliveryDate"
+        style="@style/ListCell"
+        android:textColor="@color/dark_gray"
+        android:layout_weight="2" />
+
+</LinearLayout>

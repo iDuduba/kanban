@@ -7,6 +7,10 @@ package wang.laic.kanban.network.message;
 public class Failure extends Answer<String> {
     private String extra;
 
+    public Failure() {
+        setCode(7777);
+    }
+
     public String getExtra() {
         return extra;
     }

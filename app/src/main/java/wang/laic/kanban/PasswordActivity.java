@@ -22,6 +22,7 @@ import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.PasswordAnswer;
 import wang.laic.kanban.network.message.Question;
+import wang.laic.kanban.utils.KukuUtils;
 import wang.laic.kanban.views.WebCallProgressDialog;
 
 public class PasswordActivity extends BaseActivity {
@@ -86,11 +87,10 @@ public class PasswordActivity extends BaseActivity {
     }
 
     private void okHttp_change_password(String user, String oldPassword, String newPassword) {
-        HttpClient client = HttpClient.getInstance(this);
         Map<String, Object> body = new HashMap<>();
         body.put("userId", user);
-        body.put("oldPassword", client.passwordDigest(oldPassword));
-        body.put("newPassword", client.passwordDigest(newPassword));
+        body.put("oldPassword", KukuUtils.md5Digest(oldPassword));
+        body.put("newPassword", KukuUtils.md5Digest(newPassword));
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 

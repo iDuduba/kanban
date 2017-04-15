@@ -1,7 +1,9 @@
 package wang.laic.kanban.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -10,39 +12,32 @@ import java.util.List;
  */
 
 public class Order {
-    @Expose
-    private String orderNo;
 
     @Expose
-    private int deliveryNumber;
+    @SerializedName("comp_id")
+    private OrderKey orderCompId;
 
     @Expose
     private int status;
 
     @Expose
-    private String deliveryDate;
+    @SerializedName("sendDate")
+    private Date deliveryDate;
 
     @Expose
-    private String arrivalDate;
+    @SerializedName("arriveDate")
+    private Date arrivalDate;
 
     @Expose
-    private List<Part> items;
+    @SerializedName("sendItemList")
+    private List<OrderItem> items;
 
-
-    public String getOrderNo() {
-        return orderNo;
+    public OrderKey getOrderCompId() {
+        return orderCompId;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public int getDeliveryNumber() {
-        return deliveryNumber;
-    }
-
-    public void setDeliveryNumber(int deliveryNumber) {
-        this.deliveryNumber = deliveryNumber;
+    public void setOrderCompId(OrderKey orderCompId) {
+        this.orderCompId = orderCompId;
     }
 
     public int getStatus() {
@@ -53,27 +48,27 @@ public class Order {
         this.status = status;
     }
 
-    public String getDeliveryDate() {
+    public Date getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
+    public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public String getArrivalDate() {
+    public Date getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(String arrivalDate) {
+    public void setArrivalDate(Date arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
-    public List<Part> getItems() {
+    public List<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(List<Part> items) {
+    public void setItems(List<OrderItem> items) {
         this.items = items;
     }
 }

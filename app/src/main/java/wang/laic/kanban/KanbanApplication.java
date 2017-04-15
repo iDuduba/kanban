@@ -2,6 +2,8 @@ package wang.laic.kanban;
 
 import android.app.Application;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
@@ -18,6 +20,8 @@ public class KanbanApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        JodaTimeAndroid.init(this);
 
         EventBus.builder()
                 .throwSubscriberException(BuildConfig.DEBUG)

@@ -30,7 +30,7 @@ import wang.laic.kanban.network.message.Question;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.spinnerCustomers) Spinner mCustomersView;
+    @BindView(R.id.spinner_customers) Spinner mCustomersView;
 
     List<Customer> customers;
 
@@ -101,32 +101,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.btnChangePassword)
+    @OnClick(R.id.btn_change_password)
     public void onChangePassword() {
         Intent intent = new Intent(this, PasswordActivity.class);
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnQueryOrder)
+    @OnClick(R.id.btn_query_order)
     public void onQueryOrder() {
         Intent intent = new Intent(this, OrderQueryActivity.class);
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnStockIn)
+    @OnClick(R.id.btn_in_order)
     public void onStockIn() {
         Intent intent = new Intent(this, ScanOrderActivity.class);
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnStockInCancel)
+    @OnClick(R.id.btn_revoked_order)
     public void onRevokedOrder() {
         Intent intent = new Intent(this, ScanOrderActivity.class);
         intent.putExtra(Constants.KEY_ORDER_REVOKED_FLAG, true);
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnStockOut)
+    @OnClick(R.id.btn_out_goods)
     public void onStockOut() {
         Intent intent = new Intent(this, ScanPartActivity.class);
         startActivity(intent);

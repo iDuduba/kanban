@@ -11,12 +11,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.URLDecoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -30,6 +26,7 @@ import wang.laic.kanban.Constants;
 import wang.laic.kanban.R;
 import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.Question;
+import wang.laic.kanban.utils.KukuUtils;
 
 /**
  * Created by duduba on 2017/3/31.
@@ -44,7 +41,7 @@ public class HttpClient {
 
     private Context mContext;
     private String apiBaseUrl;
-    private String apiAppId;
+    private int apiAppId;
     private String apiSecretKey;
 
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
@@ -64,7 +61,7 @@ public class HttpClient {
         gson = new GsonBuilder()
                 .serializeNulls()
                 .excludeFieldsWithoutExposeAnnotation()
-                .setDateFormat("yyyy-MM-dd")
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .setPrettyPrinting()
                 .create();
 
@@ -72,7 +69,7 @@ public class HttpClient {
 
         Resources resources = mContext.getResources();
         apiBaseUrl = resources.getString(R.string.api_base_url);
-        apiAppId = resources.getString(R.string.api_app_id);
+        apiAppId = Integer.valueOf(resources.getString(R.string.api_app_id));
         apiSecretKey = resources.getString(R.string.api_secret_key);
 
 //        mHandler = new Handler(mContext.getMainLooper());
@@ -126,9 +123,9 @@ public class HttpClient {
         StringBuilder x = new StringBuilder();
         x.append(apiAppId).append(decodedBody).append(apiSecretKey);
 
-        String signString = passwordDigest(x.toString());
+        String signString = KukuUtils.md5Digest(x.toString());
         question.setSign(signString);
-        question.setAppId(apiAppId);
+        question.setAppid(apiAppId);
 
         String jsonBody = gson.toJson(question);
         Log.i(Constants.TAG, jsonBody);
@@ -163,22 +160,6 @@ public class HttpClient {
                 }
             }
         });
-    }
-
-    public String passwordDigest(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(password.getBytes());
-            byte[] digest = md.digest();
-            BigInteger number = new BigInteger(1, digest);
-            String hashText = number.toString(16);
-            while (hashText.length() < 32) {
-                hashText = "0" + hashText;
-            }
-            return hashText;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

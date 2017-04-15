@@ -6,31 +6,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.List;
 
 import wang.laic.kanban.R;
-import wang.laic.kanban.models.OpEnum;
-import wang.laic.kanban.models.Part;
+import wang.laic.kanban.models.OrderItem;
 
 /**
  * Created by duduba on 2017/4/1.
  */
 
-public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHolder> {
+public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Part> mDataset;
+    private List<OrderItem> mDataset;
 
-    public StockOutAdapter(Context context, List<Part> myDataset) {
+    public PartAdapter(Context context, List<OrderItem> myDataset) {
         mContext = context;
         mDataset = myDataset;
     }
@@ -39,7 +34,7 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_stockout, parent, false);
+                .inflate(R.layout.item_part, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -50,36 +45,12 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final Part item = mDataset.get(position);
+        final OrderItem item = mDataset.get(position);
 
-        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-//                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
-            }
-        });
-        holder.swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
-            @Override
-            public void onDoubleClick(SwipeLayout layout, boolean surface) {
-                Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
-            }
-        });
-        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDataset.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mDataset.size());
-//                Toast.makeText(view.getContext(), "Deleted " + viewHolder.textViewData.getText().toString() + "!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.txtPartModel.setText(item.getModel());
-        holder.txtPartNo.setText(item.getPartNo());
-        holder.txtPartCategory.setText(item.getCategory());
-        holder.txtStockOutType.setText(OpEnum.getName(item.getOpType()));
-        holder.etPartQuantity.setText(String.valueOf(item.getQuantity()));
+        holder.txtPartModel.setText(item.getItemCode());
+        holder.txtPartNo.setText(item.getExtpn());
+        holder.txtPartCategory.setText(item.getDescription());
+        holder.txtPartQuantity.setText(String.valueOf(item.getSendQuantity()));
 
 //        holder.txtPartModel.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -95,12 +66,12 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         return mDataset.size();
     }
 
-    public void add(int position, Part item) {
+    public void add(int position, OrderItem item) {
         mDataset.add(position, item);
         notifyItemInserted(position);
     }
 
-    public void remove(Part item) {
+    public void remove(OrderItem item) {
         int position = mDataset.indexOf(item);
         mDataset.remove(position);
         notifyItemRemoved(position);
@@ -116,26 +87,19 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        SwipeLayout swipeLayout;
-        Button buttonDelete;
-
         // each data item is just a string in this case
         public TextView txtPartModel;
         public TextView txtPartNo;
         public TextView txtPartCategory;
-        public TextView txtStockOutType;
-        public EditText etPartQuantity;
+        public TextView txtPartQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            buttonDelete = (Button) itemView.findViewById(R.id.delete);
 
             txtPartModel = (TextView) itemView.findViewById(R.id.part_model);
             txtPartNo = (TextView) itemView.findViewById(R.id.part_no);
             txtPartCategory = (TextView) itemView.findViewById(R.id.part_category);
-            txtStockOutType = (TextView) itemView.findViewById(R.id.stock_out_type);
-            etPartQuantity = (EditText) itemView.findViewById(R.id.part_quantity);
+            txtPartQuantity = (TextView) itemView.findViewById(R.id.part_quantity);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

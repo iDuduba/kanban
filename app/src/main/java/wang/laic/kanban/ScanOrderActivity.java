@@ -9,8 +9,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -7,20 +7,20 @@
     tools:context="wang.laic.kanban.MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_customers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/lab_customer_list"
-        app:layout_constraintTop_toTopOf="@+id/spinnerCustomers"
+        app:layout_constraintTop_toTopOf="@+id/spinner_customers"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerCustomers" />
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_customers" />
 
     <Spinner
-        android:id="@+id/spinnerCustomers"
+        android:id="@+id/spinner_customers"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:spinnerMode="dialog"
         android:layout_width="0dp"
@@ -31,7 +31,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginEnd="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView"
+        app:layout_constraintLeft_toRightOf="@+id/tv_customers"
         android:layout_marginLeft="8dp" />
 
     <GridLayout
@@ -50,42 +50,42 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCustomers"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_customers"
         app:layout_constraintVertical_bias="0.0"
         android:layout_marginEnd="8dp">
 
         <Button
-            android:id="@+id/btnChangePassword"
+            android:id="@+id/btn_change_password"
             style="@style/MainButton"
             android:drawableTop="@drawable/password_change"
             android:text="@string/lab_password_change" />
 
         <Button
-            android:id="@+id/btnQueryOrder"
+            android:id="@+id/btn_query_order"
             style="@style/MainButton"
             android:drawableTop="@drawable/order_query"
             android:text="@string/lab_order_query" />
 
         <Button
-            android:id="@+id/btnStockIn"
+            android:id="@+id/btn_in_order"
             style="@style/MainButton"
             android:drawableTop="@drawable/stock_in"
             android:text="@string/lab_stock_in" />
 
         <Button
-            android:id="@+id/btnStockInCancel"
+            android:id="@+id/btn_revoked_order"
             style="@style/MainButton"
             android:drawableTop="@drawable/cancel"
             android:text="@string/lab_stock_in_cancel" />
 
         <Button
-            android:id="@+id/btnStockOut"
+            android:id="@+id/btn_out_goods"
             style="@style/MainButton"
             android:drawableTop="@drawable/stock_out"
             android:text="@string/lab_stock_out" />
 
         <Button
-            android:id="@+id/btnFlowQuery"
+            android:id="@+id/btn_query_flow"
             style="@style/MainButton"
             android:drawableTop="@drawable/stock_query"
             android:text="@string/lab_stock_flow_query" />

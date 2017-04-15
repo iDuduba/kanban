@@ -11,7 +11,7 @@ public class Question<T> {
     private int version = 0;
 
     @Expose
-    private String appId;
+    private int appid;
 
     @Expose
     private String sign;
@@ -27,12 +27,12 @@ public class Question<T> {
         this.version = version;
     }
 
-    public String getAppId() {
-        return appId;
+    public int getAppid() {
+        return appid;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setAppid(int appid) {
+        this.appid = appid;
     }
 
     public String getSign() {

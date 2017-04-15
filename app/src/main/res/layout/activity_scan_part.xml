@@ -34,7 +34,7 @@
             android:text="型号" />
 
         <TextView
-            android:id="@+id/part_model"
+            android:id="@+id/tv_part_model"
             android:layout_columnWeight="5" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:text="客户零件号" />
 
         <TextView
-            android:id="@+id/part_no"
+            android:id="@+id/tv_part_no"
             android:layout_columnWeight="5" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:text="小类" />
 
         <TextView
-            android:id="@+id/part_category"
+            android:id="@+id/tv_part_category"
             android:layout_columnWeight="5" />
 
         <TextView
@@ -61,7 +61,7 @@
             android:text="库存量" />
 
         <TextView
-            android:id="@+id/part_stock"
+            android:id="@+id/tv_part_stock"
             android:layout_columnWeight="5" />
     </GridLayout>
 
@@ -81,7 +81,7 @@
             android:text="出库类型：" />
 
         <Spinner
-            android:id="@+id/select_out_type"
+            android:id="@+id/spinner_out_type"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:spinnerMode="dialog"
             android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
             android:text="出库数量：" />
 
         <EditText
-            android:id="@+id/quantity"
+            android:id="@+id/et_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -118,14 +118,14 @@
         android:id="@+id/buttonsLayout">
 
         <Button
-            android:id="@+id/resume"
+            android:id="@+id/btn_resume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="添加并继续扫描" />
 
         <Button
-            android:id="@+id/commit"
+            android:id="@+id/btn_commit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

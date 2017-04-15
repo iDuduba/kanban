@@ -4,8 +4,10 @@
     <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
     <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
-    <string name="api_app_id">duduba</string>
+    <!--<string name="api_base_url">http://192.168.1.157:8888/api</string>-->
+    <string name="api_app_id">88888888</string>
     <string name="api_secret_key">DgAewDold3V8fiUwxE0ANjjdinuQCSar</string>
+
 
     <string name="lab_customer_list">请选择要处理的客户</string>
     <string name="lab_password_change">修改密码</string>
@@ -18,6 +20,10 @@
     <string name="lab_confirm_stock_in">确定入库</string>
     <string name="lab_confirm_stock_out">确定出库</string>
     <string name="lab_revoke_stock_in">撤销入库</string>
+
+    <string name="lab_week">一周内</string>
+    <string name="lab_month">一月内</string>
+    <string name="lab_3_month">三月内</string>
 
 
     <!-- Strings related to login -->
@@ -87,5 +93,16 @@
     <string name="pwd_confirm">确认</string>
     <string name="pwd_err_invalid_retry_password">密码不一致</string>
     <string name="pwd_err_invalid_password">密码太短</string>
+
+
+    <string name="prompt_select_begin_date">选择开始时间</string>
+    <string name="prompt_select_end_date">选择结束时间</string>
+
+    <string name="error_sever_exception">服务端异常</string>
+
+    <string name="error_xxx">An error message</string>
+    <string name="msg_xxx">A regular information message</string>
+    <string name="title_xxx">A title, i.e. a dialog title</string>
+    <string name="action_xxx">An action such as "Save" or "Create"</string>
 
 </resources>

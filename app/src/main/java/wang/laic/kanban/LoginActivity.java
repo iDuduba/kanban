@@ -52,6 +52,7 @@ import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.LoginAnswer;
 import wang.laic.kanban.network.message.Question;
 import wang.laic.kanban.network.message.RegisterAnswer;
+import wang.laic.kanban.utils.KukuUtils;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_PHONE_STATE;
@@ -365,7 +366,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Map<String, Object> body = new HashMap<>();
         body.put("userCode", user);
         body.put("IMEI", imei);
-        body.put("password", HttpClient.getInstance(this).passwordDigest(password));
+        body.put("password", KukuUtils.md5Digest(password));
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -378,11 +379,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         showProgress(false);
 
         if(event.getCode() == 0) {
-            Log.i(TAG, "session = " + event.getBody().get("session"));
+//            Log.i(TAG, "session = " + event.getBody().get("session"));
 
             KanbanApplication app = (KanbanApplication)getApplication();
             app.setParameter(Constants.KEY_CURRENT_USER, mUserView.getText().toString());
-            app.setParameter(Constants.KEY_SESSION, event.getBody().get("session"));
+//            app.setParameter(Constants.KEY_SESSION, event.getBody().get("session"));
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

@@ -1,6 +1,7 @@
 package wang.laic.kanban.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by duduba on 2017/3/31.
@@ -8,20 +9,30 @@ import com.google.gson.annotations.Expose;
 
 public class Part {
 
+    /*
+{"code":0,"message":null,"timestamp":1491828567831,"body":
+[{"customerCode":"CBJ10030",
+"itemType":"0",
+"itemCode":"N-XVRNW10HL1/4ED",
+"description":null,
+"customerSku":"231111","category":"硬管接头体","safeStock":0.0}]}
+     */
     @Expose
+    @SerializedName("itemCode")
     private String model;
 
-    @Expose(deserialize = true,serialize = false)
+    @Expose(deserialize = true, serialize = false)
+    @SerializedName("customerSku")
     private String partNo;
 
-    @Expose(deserialize = true,serialize = false)
+    @Expose(deserialize = true, serialize = false)
     private String category;
 
     @Expose(deserialize = false,serialize = true)
     private int opType = OpEnum.OUT.getType();
 
     @Expose
-    private int quantity;
+    private int quantity = 0;
 
     public String getModel() {
         return model;

@@ -7,8 +7,8 @@ package wang.laic.kanban.models;
 public enum OrderStatusEnum {
     ALL("全部", 0),
     WAY("在途", 1),
-    ARRIVAL("到货",2),
-    REVOKE("撤销", 3);
+    AOG("到货",2),
+    REVOKED("撤销", 3);
 
 
     private String name;
@@ -35,9 +35,9 @@ public enum OrderStatusEnum {
             case 1:
                 return WAY;
             case 2:
-                return ARRIVAL;
+                return AOG;
             case 3:
-                return REVOKE;
+                return REVOKED;
             default:
                 return null;
         }
