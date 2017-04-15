@@ -5,17 +5,19 @@ package wang.laic.kanban.models;
  */
 
 public enum OrderStatusEnum {
-    ALL("全部", 0),
-    WAY("在途", 1),
-    AOG("到货",2),
-    REVOKED("撤销", 3);
+    ALL("全部", "全部", 1111),
+    WAY("在途", "入库", 0),
+    AOG("到货", "到货", 1),
+    REVOKED("撤销", "撤销", 9);
 
 
     private String name;
+    private String backName;
     private int type;
 
-    private OrderStatusEnum(String name, int type) {
+    private OrderStatusEnum(String name, String backName, int type) {
         this.name = name;
+        this.backName = backName;
         this.type = type;
     }
 
@@ -23,6 +25,14 @@ public enum OrderStatusEnum {
         for(OrderStatusEnum op: OrderStatusEnum.values()) {
             if(op.getType() == type) {
                 return op.getName();
+            }
+        }
+        return null;
+    }
+    public static String getBackName(int type) {
+        for(OrderStatusEnum op: OrderStatusEnum.values()) {
+            if(op.getType() == type) {
+                return op.getBackName();
             }
         }
         return null;
@@ -57,6 +67,14 @@ public enum OrderStatusEnum {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getBackName() {
+        return backName;
+    }
+
+    public void setBackName(String backName) {
+        this.backName = backName;
     }
 
     @Override

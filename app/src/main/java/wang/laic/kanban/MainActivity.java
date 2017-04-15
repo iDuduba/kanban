@@ -132,4 +132,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.btn_query_flow)
+    public void onQueryFlow() {
+        Intent intent = new Intent(this, FlowActivity.class);
+        startActivity(intent);
+    }
+
 }

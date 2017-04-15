@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="wang.laic.kanban.OrderQueryActivity">
+    tools:context="wang.laic.kanban.FlowActivity">
 
     <LinearLayout
         android:id="@+id/queryZone"
@@ -13,40 +14,27 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true">
 
-        <RadioGroup
-            android:id="@+id/rg_order_status"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/radio_all"
+            <EditText
+                android:id="@+id/et_item_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="全部"
-                android:onClick="onOrderStatusRadioButtonClicked"
-                android:checked="true"/>
+                android:hint="输入型号或扫码"/>
 
-            <RadioButton
-                android:id="@+id/radio_way"
+            <ImageButton
+                android:id="@+id/scannerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onOrderStatusRadioButtonClicked"
-                android:text="在途" />
+                android:layout_gravity="right"
+                android:layout_marginLeft="12dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/barcode_scanner" />
 
-            <RadioButton
-                android:id="@+id/radio_aog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onOrderStatusRadioButtonClicked"
-                android:text="到货" />
-
-            <RadioButton
-                android:id="@+id/radio_revoked"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onOrderStatusRadioButtonClicked"
-                android:text="撤销" />
-        </RadioGroup>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,7 +99,7 @@
                 android:onClick="onDateRangeRadioButtonClicked" />
 
         </RadioGroup>
-
+        
     </LinearLayout>
 
 
@@ -125,26 +113,22 @@
         <TextView
             style="@style/ListCell"
             android:layout_weight = "2"
-            android:text = "订单号" />
+            android:text = "日期" />
 
         <TextView
             style="@style/ListCell"
             android:layout_weight = "1.5"
-            android:text = "发货次数" />
+            android:text = "类型" />
 
         <TextView
             style="@style/ListCell"
             android:layout_weight = "1"
-            android:text = "状态" />
+            android:text = "数量" />
 
-        <TextView
-            style="@style/ListCell"
-            android:layout_weight = "2"
-            android:text = "发货日期" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id = "@+id/orderList"
+        android:id = "@+id/rv_flow_list"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
         android:layout_below="@id/header"

@@ -5,7 +5,7 @@ package wang.laic.kanban.models;
  */
 
 public enum OpEnum {
-    OUT("正常出库", 1),
+    OUT("领料出库", 1),
     LOSS("盘亏", 2),
     EXOUT("额外出库",3),
     PROFIT("盘盈", 4),
@@ -14,7 +14,6 @@ public enum OpEnum {
     IN("采购入库", 7),
     TRANSOUT("调货出库", 8),
     RETOUT("供应商退货出库", 9);
-
 
     private String name;
     private int type;

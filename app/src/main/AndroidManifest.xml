@@ -60,8 +60,12 @@
         <activity
             android:name=".OrderActivity"
             android:parentActivityName=".ScanOrderActivity" />
-        <activity android:name=".OrderQueryActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".OrderQueryActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity android:name=".FlowActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

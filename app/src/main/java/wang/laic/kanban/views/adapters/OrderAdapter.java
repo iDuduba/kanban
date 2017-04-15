@@ -77,7 +77,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
         holder.tvOrderNo.setText(order.getOrderCompId().getOrderNo());
         holder.tvOrderTimes.setText("" + order.getOrderCompId().getDeliveryNumber());
-        holder.tvStatus.setText(OrderStatusEnum.getName(order.getStatus()));
+        holder.tvStatus.setText(OrderStatusEnum.getBackName(order.getStatus()));
         holder.tvDeliveryDate.setText(KukuUtils.getFormatDate(order.getDeliveryDate()));
 
     }

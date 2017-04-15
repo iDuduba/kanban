@@ -6,11 +6,16 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +64,7 @@ public class HttpClient {
         client = clientBuilder.build();
 
         gson = new GsonBuilder()
+                .registerTypeAdapter(Integer.class, new IntegerSerializer())
                 .serializeNulls()
                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -162,4 +168,9 @@ public class HttpClient {
         });
     }
 
+    private class IntegerSerializer implements JsonSerializer<Integer> {
+        public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.toString());
+        }
+    }
 }

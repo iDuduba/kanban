@@ -28,7 +28,6 @@ public class Part {
     @Expose(deserialize = true, serialize = false)
     private String category;
 
-    @Expose(deserialize = false,serialize = true)
     private int opType = OpEnum.OUT.getType();
 
     @Expose

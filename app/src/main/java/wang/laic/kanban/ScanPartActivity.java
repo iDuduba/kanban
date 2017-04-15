@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import wang.laic.kanban.models.Customer;
 import wang.laic.kanban.models.OpEnum;
+import wang.laic.kanban.models.OrderStatusEnum;
 import wang.laic.kanban.models.Part;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.PartAnswer;
@@ -45,17 +47,18 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.tv_part_no) TextView tvPartNo;
     @BindView(R.id.tv_part_category) TextView tvCategory;
     @BindView(R.id.tv_part_stock) TextView tvStock;
-    @BindView(R.id.spinner_out_type) Spinner stockTypeView;
     @BindView(R.id.et_quantity) EditText etQuantity;
 
     BeepManager beepManager;
 
     private String lastText;
 
-    private OpEnum[] mItems = new OpEnum[] {OpEnum.OUT, OpEnum.LOSS, OpEnum.EXOUT, OpEnum.TRANSOUT, OpEnum.RETOUT};
+    private OpEnum[] mItems = new OpEnum[] {OpEnum.OUT, OpEnum.LOSS, OpEnum.EXOUT};
 
     private Part mPart = new Part();
     private List<Part> mOuts = new ArrayList<>();
+
+    private OpEnum mOpType = OpEnum.OUT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,23 +83,7 @@ public class ScanPartActivity extends BaseActivity {
 //            }
 //        });
 
-        ArrayAdapter<OpEnum> adapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, mItems);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stockTypeView.setAdapter(adapter);
-
-        stockTypeView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String[] types = getResources().getStringArray(R.array.stock_out_type);
-//                Toast.makeText(ScanPartActivity.this, "你的选择是：" + mItems[position], Toast.LENGTH_SHORT).show();
-                mPart.setOpType(mItems[position].getType());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        resetProdInfo();
 
         viewBarcodeScanner.decodeContinuous(callback);
         viewBarcodeScanner.setStatusText(getString(R.string.scan_status_text));
@@ -141,6 +128,7 @@ public class ScanPartActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueryPartEvent(PartAnswer event) {
+        Log.i(Constants.TAG, event.getCode() + " -> " + getString(R.string.lab_part_code));
         if(event.getCode() == 0) {
             List<Part> items = event.getBody();
             if(items != null && items.size() > 0) {
@@ -148,10 +136,13 @@ public class ScanPartActivity extends BaseActivity {
                 tvPartNo.setText(items.get(0).getPartNo());
                 tvCategory.setText(items.get(0).getCategory());
                 tvStock.setText("" + items.get(0).getQuantity());
+
+                etQuantity.setSelectAllOnFocus(true);
+                etQuantity.requestFocus();
             }
         } else {
-            Log.i(Constants.TAG, "code = " + event.getCode());
             String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code=" + event.getCode() + " >" + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
@@ -175,10 +166,7 @@ public class ScanPartActivity extends BaseActivity {
         mOuts.add(mPart);
         mPart = new Part();
 
-        tvModel.setText(null);
-        tvPartNo.setText(null);
-        tvCategory.setText(null);
-        tvStock.setText(null);
+        resetProdInfo();
 
         viewBarcodeScanner.resume();
     }
@@ -189,7 +177,7 @@ public class ScanPartActivity extends BaseActivity {
         app.setParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
 
         Intent intent = new Intent(this, StockOutActivity.class);
-        intent.putExtra(Constants.K_STOCK_OUT_PART_LIST, Constants.K_STOCK_OUT_PART_LIST);
+        intent.putExtra(Constants.K_STOCK_OUT_OP_TYPE, mOpType.getType());
         startActivity(intent);
     }
 
@@ -216,5 +204,36 @@ public class ScanPartActivity extends BaseActivity {
         return viewBarcodeScanner.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
+
+    private void resetProdInfo() {
+        tvModel.setText(null);
+        tvPartNo.setText(null);
+        tvCategory.setText(null);
+        tvStock.setText(null);
+    }
+
+    public void onOpRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_op_out:
+                if (checked) {
+                    mOpType = OpEnum.OUT;
+                }
+                break;
+            case R.id.radio_op_loss:
+                if (checked) {
+                    mOpType = OpEnum.LOSS;
+                }
+                break;
+            case R.id.radio_op_exout:
+                if (checked) {
+                    mOpType = OpEnum.EXOUT;
+                }
+                break;
+        }
+    }
 
 }

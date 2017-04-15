@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import wang.laic.kanban.models.Customer;
+import wang.laic.kanban.models.OpEnum;
 import wang.laic.kanban.models.Part;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.Question;
@@ -33,10 +35,12 @@ public class StockOutActivity extends BaseActivity {
     @BindView(R.id.part_list_view) RecyclerView recyclerView;
     @BindView(R.id.itemSize) TextView itemSizeView;
     @BindView(R.id.partQuantity) TextView partQuantityView;
+    @BindView(R.id.tv_op_type) TextView tvOpType;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private int mOpType;
     private List<Part> items;
 
     @Override
@@ -58,6 +62,9 @@ public class StockOutActivity extends BaseActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+
+        mOpType = getIntent().getIntExtra(Constants.K_STOCK_OUT_OP_TYPE, OpEnum.OUT.getType());
+        tvOpType.setText(OpEnum.getName(mOpType) + " >>> ");
 
         KanbanApplication app = (KanbanApplication)getApplication();
         items = (List<Part>)app.getParameter(Constants.K_STOCK_OUT_PART_LIST);
@@ -85,6 +92,7 @@ public class StockOutActivity extends BaseActivity {
     private void okHttp_stock_out(String customerCode) {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
+        body.put("opType", mOpType);
         body.put("items", items);
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
@@ -94,10 +102,17 @@ public class StockOutActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStockOutEvent(StockOutAnswer event) {
-        Log.i(Constants.TAG, "code = " + event.getCode());
         if(event.getCode() == 0) {
             Toast.makeText(this, "OK", Toast.LENGTH_LONG).show();
         } else {
+            String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code=" + event.getCode() + " >" + errorMessage);
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
     }
 

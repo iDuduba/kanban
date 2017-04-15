@@ -78,7 +78,6 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         holder.txtPartModel.setText(item.getModel());
         holder.txtPartNo.setText(item.getPartNo());
         holder.txtPartCategory.setText(item.getCategory());
-        holder.txtStockOutType.setText(OpEnum.getName(item.getOpType()));
         holder.etPartQuantity.setText(String.valueOf(item.getQuantity()));
 
 //        holder.txtPartModel.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +122,6 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         public TextView txtPartModel;
         public TextView txtPartNo;
         public TextView txtPartCategory;
-        public TextView txtStockOutType;
         public EditText etPartQuantity;
 
         public ViewHolder(View itemView) {
@@ -134,7 +132,6 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
             txtPartModel = (TextView) itemView.findViewById(R.id.part_model);
             txtPartNo = (TextView) itemView.findViewById(R.id.part_no);
             txtPartCategory = (TextView) itemView.findViewById(R.id.part_category);
-            txtStockOutType = (TextView) itemView.findViewById(R.id.stock_out_type);
             etPartQuantity = (EditText) itemView.findViewById(R.id.part_quantity);
 
             itemView.setOnClickListener(new View.OnClickListener() {

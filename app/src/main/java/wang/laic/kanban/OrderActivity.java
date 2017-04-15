@@ -78,7 +78,7 @@ public class OrderActivity extends BaseActivity {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
         body.put("orderNo", orderNo);
-        body.put("deliveryNumber", ""+times); //Todo
+        body.put("deliveryNumber", times);
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -105,7 +105,7 @@ public class OrderActivity extends BaseActivity {
 
     private void fill(Order order) {
         OrderStatusEnum os = OrderStatusEnum.valueOf(order.getStatus());
-        orderStatusView.setText(String.format(getString(R.string.prompt_order_status), os.getName()));
+        orderStatusView.setText(String.format(getString(R.string.prompt_order_status), os.getBackName()));
         if(order.getDeliveryDate() != null) {
             deliveryDateView.setText(String.format(getString(R.string.prompt_order_delivery_date), KukuUtils.getFormatDate(order.getDeliveryDate())));
         }
