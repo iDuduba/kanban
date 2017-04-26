@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/item_selector"
-    android:layout_marginBottom="2dp"
-    android:elevation="5dp">
-    <!--android:padding="6dp">-->
-    <!--android:background="@drawable/item_selector"-->
+android:layout_width="match_parent"
+android:layout_height="?android:attr/listPreferredItemHeight"
+android:background="@drawable/item_selector"
+android:layout_marginBottom="2dp"
+android:elevation="5dp">
+<!--android:padding="6dp">-->
+<!--android:background="@drawable/item_selector"-->
 
     <TextView
         android:id="@+id/tv_index"
@@ -17,7 +17,8 @@
         android:layout_marginLeft="8dp"
         android:textSize="20sp"
         android:gravity="center"
-        android:text="12"/>
+        android:text="13"/>
+
 
     <View
         android:id="@+id/v_line"
@@ -28,61 +29,77 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/tv_index"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:background="?android:attr/listDivider" />
-
-    <TextView
-        android:id="@+id/part_model"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/part_quantity"
-        android:layout_above="@+id/exInfo"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/v_line"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="model"
-        android:textSize="16sp" />
 
 
     <LinearLayout
-        android:id="@+id/exInfo"
+        android:id="@+id/ll_order_info"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/tv_order_status"
+        android:layout_above="@+id/ll_date_info"
+        android:layout_toRightOf="@id/v_line">
+
+        <TextView
+            android:id="@+id/tv_order_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:layout_weight="1"
+            android:text="1983412343"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_order_times"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:ellipsize="marquee"
+            android:layout_weight="1"
+            android:text="1"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_date_info"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/v_line"
-        android:layout_toLeftOf="@id/part_quantity"
-        android:layout_width="match_parent"
+        android:layout_toLeftOf="@id/tv_order_status"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp">
 
         <TextView
-            android:id="@+id/part_no"
+            android:id="@+id/tv_delivery_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:text="no"
+            android:text="2000-01-01"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/part_desc"
+            android:id="@+id/tv_arrival_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:text="category"
+            android:text="2000-12-12"
             android:textSize="12sp" />
 
     </LinearLayout>
 
 
     <TextView
-        android:id="@+id/part_quantity"
+        android:id="@+id/tv_order_status"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -90,7 +107,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="8dp"
         android:gravity="center"
-        android:textSize="20sp"
-        android:text="1234"/>
+        android:textSize="18sp"
+        android:text="在途"/>
 
 </RelativeLayout>

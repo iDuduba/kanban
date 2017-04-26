@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="Delete Item?"
+            android:text="删除这条数据?"
             android:textColor="#fff"
             android:textSize="17sp" />
 
@@ -39,7 +39,7 @@
             android:layout_height="40dp"
             android:layout_weight="4"
             android:background="#ffffff"
-            android:text="Yes,Delete"
+            android:text="是"
             android:textColor="#FF5534" />
     </LinearLayout>
 
@@ -48,29 +48,42 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="@drawable/item_selector"
-        android:elevation="5dp"
-        android:padding="10dp">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="12dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/gear" />
+        android:elevation="5dp">
 
         <TextView
-            android:id="@+id/part_model"
-            android:layout_width="fill_parent"
+            android:id="@+id/tv_index"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="12"/>
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/tv_index"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/tv_part_model"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/part_quantity"
+            android:layout_toLeftOf="@+id/tv_part_quantity"
             android:layout_above="@+id/exInfo"
             android:layout_alignWithParentIfMissing="true"
-            android:layout_toRightOf="@id/icon"
+            android:layout_toRightOf="@id/v_line"
             android:gravity="center_vertical"
+            android:maxLines="1"
             android:text="Example application"
             android:textSize="16sp" />
 
@@ -79,28 +92,31 @@
             android:id="@+id/exInfo"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/icon"
-            android:layout_toLeftOf="@+id/part_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_toRightOf="@id/v_line"
+            android:layout_toLeftOf="@+id/tv_part_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
             <TextView
-                android:id="@+id/part_no"
+                android:id="@+id/tv_part_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="marquee"
+                android:maxLines="1"
                 android:text="part no"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/part_category"
+                android:id="@+id/tv_part_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="marquee"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:maxLines="1"
                 android:text="category"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -108,12 +124,13 @@
 
 
         <EditText
-            android:id="@+id/part_quantity"
+            android:id="@+id/tv_part_quantity"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginRight="8dp"
             android:text="1234"/>
 
     </RelativeLayout>

@@ -26,6 +26,7 @@ import wang.laic.kanban.models.Customer;
 import wang.laic.kanban.models.OpEnum;
 import wang.laic.kanban.models.Part;
 import wang.laic.kanban.network.HttpClient;
+import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.Question;
 import wang.laic.kanban.network.message.StockOutAnswer;
 import wang.laic.kanban.views.adapters.StockOutAdapter;
@@ -41,7 +42,7 @@ public class StockOutActivity extends BaseActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private int mOpType;
-    private List<Part> items;
+    private List<Part> items = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +67,7 @@ public class StockOutActivity extends BaseActivity {
         mOpType = getIntent().getIntExtra(Constants.K_STOCK_OUT_OP_TYPE, OpEnum.OUT.getType());
         tvOpType.setText(OpEnum.getName(mOpType) + " >>> ");
 
-        KanbanApplication app = (KanbanApplication)getApplication();
-        items = (List<Part>)app.getParameter(Constants.K_STOCK_OUT_PART_LIST);
+        items = (List<Part>)getAppParameter(Constants.K_STOCK_OUT_PART_LIST);
 
         String fm = getString(R.string.prompt_stock_out_1);
         itemSizeView.setText(String.format(fm, items.size()));
@@ -89,7 +89,12 @@ public class StockOutActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private void okHttp_stock_out(String customerCode) {
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    private void okHttp_stock_out() {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
         body.put("opType", mOpType);
@@ -102,29 +107,39 @@ public class StockOutActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStockOutEvent(StockOutAnswer event) {
+        mProgress.dismiss();
         if(event.getCode() == 0) {
-            Toast.makeText(this, "OK", Toast.LENGTH_LONG).show();
+            showMessage("出库成功!");
+            items = null;
+            removeAppParameter(Constants.K_STOCK_OUT_PART_LIST);
+            finish();
         } else {
             String errorMessage = event.getMessage();
             Log.i(Constants.TAG, "code=" + event.getCode() + " >" + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showMessage(errorMessage);
         }
     }
 
-    @OnClick(R.id.confirm)
-    public void confirm() {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFailureEvent(Failure failure) {
+        if(failure.getBody().compareTo("/stockout") == 0) {
+            mProgress.dismiss();
+            showMessage(failure.getMessage());
+        }
+    }
+
+    @OnClick(R.id.btn_confirm)
+    public void onBtnConfirm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("确认提交数据?");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                okHttp_stock_out("KISS");
-
+                mProgress.show();
+                okHttp_stock_out();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -135,5 +150,25 @@ public class StockOutActivity extends BaseActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    @OnClick(R.id.btn_cancel)
+    public void onBtnCancel() {
+        if(items != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("是否取消出库?");
+            builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    items = null;
+                    removeAppParameter(Constants.K_STOCK_OUT_PART_LIST);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 }

@@ -45,6 +45,7 @@
         android:columnCount="2"
         android:orientation="horizontal"
         android:rowCount="3"
+
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -57,37 +58,37 @@
         <Button
             android:id="@+id/btn_change_password"
             style="@style/MainButton"
-            android:drawableTop="@drawable/password_change"
+            android:drawableTop="@drawable/main_password_change"
             android:text="@string/lab_password_change" />
 
         <Button
             android:id="@+id/btn_query_order"
             style="@style/MainButton"
-            android:drawableTop="@drawable/order_query"
+            android:drawableTop="@drawable/main_order_query"
             android:text="@string/lab_order_query" />
 
         <Button
             android:id="@+id/btn_in_order"
             style="@style/MainButton"
-            android:drawableTop="@drawable/stock_in"
+            android:drawableTop="@drawable/main_order_in"
             android:text="@string/lab_stock_in" />
 
         <Button
             android:id="@+id/btn_revoked_order"
             style="@style/MainButton"
-            android:drawableTop="@drawable/cancel"
+            android:drawableTop="@drawable/main_order_revoked"
             android:text="@string/lab_stock_in_cancel" />
 
         <Button
             android:id="@+id/btn_out_goods"
             style="@style/MainButton"
-            android:drawableTop="@drawable/stock_out"
+            android:drawableTop="@drawable/main_stock_out"
             android:text="@string/lab_stock_out" />
 
         <Button
             android:id="@+id/btn_query_flow"
             style="@style/MainButton"
-            android:drawableTop="@drawable/stock_query"
+            android:drawableTop="@drawable/main_flow_query"
             android:text="@string/lab_stock_flow_query" />
 
     </GridLayout>

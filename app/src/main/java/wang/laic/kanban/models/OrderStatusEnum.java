@@ -40,13 +40,13 @@ public enum OrderStatusEnum {
 
     public static OrderStatusEnum valueOf(int type) {
         switch (type) {
-            case 0:
+            case 1111:
                 return ALL;
-            case 1:
+            case 0:
                 return WAY;
-            case 2:
+            case 1:
                 return AOG;
-            case 3:
+            case 9:
                 return REVOKED;
             default:
                 return null;

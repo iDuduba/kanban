@@ -2,6 +2,7 @@ package wang.laic.kanban;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,16 +23,13 @@ import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.PasswordAnswer;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.utils.KukuUtils;
-import wang.laic.kanban.views.WebCallProgressDialog;
+import wang.laic.kanban.utils.KukuUtil;
 
 public class PasswordActivity extends BaseActivity {
 
     @BindView(R.id.old_password) EditText oldPasswordView;
     @BindView(R.id.new_password) EditText newPasswordView;
     @BindView(R.id.retry_password) EditText retryPasswordView;
-
-    WebCallProgressDialog mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,6 @@ public class PasswordActivity extends BaseActivity {
 
         setToolbarTitle(getString(R.string.pwd_change_password));
 
-        mProgress = new WebCallProgressDialog(this, R.style.WebCallProgressDialog);
     }
 
     @OnClick(R.id.confir_password)
@@ -83,14 +80,14 @@ public class PasswordActivity extends BaseActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 6;
+        return password.length() >= 6;
     }
 
     private void okHttp_change_password(String user, String oldPassword, String newPassword) {
         Map<String, Object> body = new HashMap<>();
-        body.put("userId", user);
-        body.put("oldPassword", KukuUtils.md5Digest(oldPassword));
-        body.put("newPassword", KukuUtils.md5Digest(newPassword));
+        body.put("userCode", user);
+        body.put("oldPassword", KukuUtil.md5Digest(oldPassword));
+        body.put("newPassword", KukuUtil.md5Digest(newPassword));
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -100,18 +97,22 @@ public class PasswordActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPasswordEvent(PasswordAnswer event) {
         mProgress.dismiss();
-        Log.i(Constants.TAG, "code = " + event.getCode());
         if(event.getCode() == 0) {
+            showMessage("重置密码成功");
             finish();
         } else {
-            Toast.makeText(PasswordActivity.this, event.getMessage(), Toast.LENGTH_SHORT).show();
+            String errorMessage = event.getMessage();
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            showMessage(errorMessage);
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFailureEvent(Failure failure) {
         if(failure.getBody().compareTo("/password") == 0) {
             mProgress.dismiss();
-            Toast.makeText(PasswordActivity.this, failure.getMessage(), Toast.LENGTH_SHORT).show();
+            showMessage(failure.getMessage());
         }
     }
 
@@ -130,18 +131,18 @@ public class PasswordActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.add:
-                Toast.makeText(PasswordActivity.this , "haha" , Toast.LENGTH_SHORT).show();
-                return(true);
-            case R.id.reset:
-                //add the function to perform here
-                return(true);
+//            case R.id.add:
+//                Toast.makeText(PasswordActivity.this , "haha" , Toast.LENGTH_SHORT).show();
+//                return(true);
+//            case R.id.reset:
+//                //add the function to perform here
+//                return(true);
             case R.id.about:
                 //add the function to perform here
                 return(true);
-            case R.id.exit:
-                //add the function to perform here
-                return(true);
+//            case R.id.exit:
+//                //add the function to perform here
+//                return(true);
         }
         return super.onOptionsItemSelected(item);
     }

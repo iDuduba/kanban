@@ -28,8 +28,7 @@ import wang.laic.kanban.models.OrderStatusEnum;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.OrdersAnswer;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.utils.KukuUtils;
-import wang.laic.kanban.views.MyLinearItemDecoration;
+import wang.laic.kanban.utils.KukuUtil;
 import wang.laic.kanban.views.adapters.OrderAdapter;
 
 public class OrderQueryActivity extends BaseActivity {
@@ -59,7 +58,7 @@ public class OrderQueryActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
-        recyclerView.addItemDecoration(new MyLinearItemDecoration(this, MyLinearItemDecoration.VERTICAL_LIST));
+//        recyclerView.addItemDecoration(new MyLinearItemDecoration(this, MyLinearItemDecoration.VERTICAL_LIST));
 
         DateTime now = DateTime.now();
         setDateRange(now.minusDays(6), now);
@@ -96,8 +95,8 @@ public class OrderQueryActivity extends BaseActivity {
             mAdapter = new OrderAdapter(this, event.getBody());
             recyclerView.setAdapter(mAdapter);
         } else {
-            Log.i(Constants.TAG, "code = " + event.getCode());
             String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code = " + event.getCode() + " > " + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
@@ -165,7 +164,7 @@ public class OrderQueryActivity extends BaseActivity {
     @OnClick(R.id.tv_begin_date)
     public void onBeginDate() {
 //        DateTime now = DateTime.now();
-        DateTime initDate = KukuUtils.parse(tvBeginDate.getText().toString());
+        DateTime initDate = KukuUtil.parse(tvBeginDate.getText().toString());
 
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
         new DatePickerDialog(OrderQueryActivity.this,
@@ -181,7 +180,7 @@ public class OrderQueryActivity extends BaseActivity {
 
     @OnClick(R.id.tv_end_date)
     public void onEndDate() {
-        DateTime initDate = KukuUtils.parse(tvEndDate.getText().toString());
+        DateTime initDate = KukuUtil.parse(tvEndDate.getText().toString());
 
         new DatePickerDialog(OrderQueryActivity.this,
                 new DatePickerDialog.OnDateSetListener() {

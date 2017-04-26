@@ -15,57 +15,57 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp">
+            android:layout_margin="6dp">
             <TextView
                 android:id="@+id/orderNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="订单号:2019090121"/>
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/orderTimes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="次数:1"/>
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/totalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="总数量:1212件"/>
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:layout_marginLeft="12dp">
+            android:layout_marginLeft="6dp">
 
             <TextView
                 android:id="@+id/orderStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="状态:在途"/>
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/deliveryDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="发货日期:2017-10-10"/>
+                android:layout_weight="2"/>
             <TextView
                 android:id="@+id/arrivalDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/darkRed"
                 android:textSize="14sp"
-                android:layout_weight="1"
-                android:text="到货日期:2017-10-10"/>
+                android:layout_weight="2"/>
         </LinearLayout>
     </LinearLayout>
 

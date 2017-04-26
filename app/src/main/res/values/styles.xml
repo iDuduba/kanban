@@ -10,18 +10,25 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#2e8abb</item> <!--浅蓝色-->
+        <!--<item name="colorPrimary">#2e8abb</item> &lt;!&ndash;浅蓝色&ndash;&gt;-->
+        <item name="colorPrimary">@color/LoginInfoColor</item> <!--浅蓝色-->
         <item name="colorPrimaryDark">#3A5FCD</item> <!--深蓝色-->
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:listDivider">@drawable/divider</item>
     </style>
 
     <style name="MainButton" parent="@style/Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_columnWeight">1</item>
-        <item name="android:layout_rowWeight">1</item>
-        <item name="android:layout_gravity">center</item>
+        <!--<item name="android:layout_columnWeight">1</item>-->
+        <!--<item name="android:layout_rowWeight">1</item>-->
+        <item name="layout_columnWeight">1</item>
+        <item name="layout_rowWeight">1</item>
+        <item name="layout_gravity">center</item>
+        <!--<item name="android:padding">12dp</item>-->
+        <item name="android:drawablePadding">12dp</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/darkRed</item>
     </style>
+
     <style name="ListCell">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -35,6 +42,13 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Full" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="AppTheme.Splash" parent="AppTheme.Full">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

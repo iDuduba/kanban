@@ -30,8 +30,14 @@ public class Part {
 
     private int opType = OpEnum.OUT.getType();
 
-    @Expose
+    @Expose(deserialize = false, serialize = true)
     private int quantity = 0;
+
+    @Expose(deserialize = true, serialize = false)
+    private int invQuantity = 0;
+
+    @Expose(deserialize = true, serialize = false)
+    private String description;
 
     public String getModel() {
         return model;
@@ -73,6 +79,22 @@ public class Part {
         this.opType = opType;
     }
 
+    public int getInvQuantity() {
+        return invQuantity;
+    }
+
+    public void setInvQuantity(int invQuantity) {
+        this.invQuantity = invQuantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Part{" +
@@ -82,5 +104,21 @@ public class Part {
                 ", opType=" + opType +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Part part = (Part) o;
+
+        return model != null ? model.equals(part.model) : part.model == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return model != null ? model.hashCode() : 0;
     }
 }

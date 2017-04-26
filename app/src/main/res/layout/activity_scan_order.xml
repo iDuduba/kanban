@@ -7,15 +7,36 @@
     tools:context="wang.laic.kanban.ScanOrderActivity">
 
 
-    <TextView
-        android:id="@+id/textView5"
+    <!--<TextView-->
+        <!--android:id="@+id/textView5"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@id/orderNo"-->
+        <!--android:layout_alignStart="@+id/orderTimes"-->
+        <!--android:textSize="16sp"-->
+        <!--android:text="@string/lab_input_order_no" />-->
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/scannerButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:layout_toRightOf="@id/textView5"-->
+        <!--android:layout_alignBottom="@id/textView5"-->
+        <!--app:srcCompat="@drawable/barcode_scanner" />-->
+
+    <Button
+        android:id="@+id/scannerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_above="@id/orderNo"
+        android:layout_centerHorizontal="true"
         android:layout_alignStart="@+id/orderTimes"
+        android:drawableTop="@drawable/barcode_scanner"
+        android:textColor="@color/darkRed"
         android:textSize="16sp"
         android:text="@string/lab_input_order_no" />
-
 
     <EditText
         android:id="@+id/orderNo"
@@ -29,16 +50,6 @@
         android:inputType="textPersonName" />
 
 
-    <ImageButton
-        android:id="@+id/scannerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:layout_toRightOf="@id/orderNo"
-        android:layout_alignBottom="@id/orderNo"
-        app:srcCompat="@drawable/barcode_scanner" />
-
-
     <EditText
         android:id="@+id/orderTimes"
         android:layout_width="wrap_content"
@@ -47,7 +58,8 @@
         android:layout_marginTop="12dp"
         android:hint="@string/hint_order_times"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:text="1"/>
 
 
     <Button

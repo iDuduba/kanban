@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kanban</string>
+    <string name="app_name">客户看板系统</string>
 
     <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
     <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
@@ -9,6 +9,7 @@
     <string name="api_secret_key">DgAewDold3V8fiUwxE0ANjjdinuQCSar</string>
 
 
+    <string name="lab_login_info">用户名:%1$s - 登录时间:%2$s</string>
     <string name="lab_customer_list">请选择要处理的客户</string>
     <string name="lab_password_change">修改密码</string>
     <string name="lab_order_query">订单查询</string>
@@ -30,10 +31,11 @@
     <string name="lab_op_exout">额外出库</string>
 
 
-    <string name="lab_part_code">型号：</string>
-    <string name="lab_part_sku">客户零件号：</string>
-    <string name="lab_part_category">小类：</string>
-    <string name="lab_part_stock">库存量：</string>
+    <string name="lab_part_code">型号:</string>
+    <string name="lab_part_sku">客户零件号:</string>
+    <string name="lab_part_category">小类:</string>
+    <string name="lab_part_stock">库存量:</string>
+    <string name="lab_part_description">描述:</string>
     <string name="lab_out_type">出库类型</string>
     <string name="lab_out_quantity">出库数量</string>
 
@@ -42,8 +44,9 @@
     <string name="title_activity_login">登录</string>
 
     <string name="prompt_user">用户名</string>
-    <string name="prompt_password">口令 (可选)</string>
+    <string name="prompt_password">口令</string>
     <string name="action_sign_in">登录</string>
+    <string name="action_logout"><u>退出</u></string>
     <string name="action_cancel_sign_in">取消</string>
     <string name="action_sign_in_short">登录</string>
     <string name="error_invalid_user">用户名无效</string>
@@ -52,6 +55,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="device_register"><u>新设备注册</u></string>
     <string name="forget_password"><u>忘记密码</u></string>
+    <string name="device_register_success">您的设备号已注册，请等待后台管理员审核通过后再登录</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -75,20 +79,22 @@
     <string name="prompt_delete_item">删除记录？</string>
     <string name="prompt_delete">删除</string>
 
-    <string name="prompt_stock_out_1">共计：%d项</string>
-    <string name="prompt_stock_out_2">总数量：%d件</string>
+    <string name="prompt_stock_out_1">共计:%1$d项</string>
+    <string name="prompt_stock_out_2">总数量:%1$d件</string>
 
 
     <string name="lab_input_order_no">请扫描或手工输入订单号</string>
     <string name="hint_order_no">订单号</string>
     <string name="hint_order_times">次数</string>
 
-    <string name="prompt_order_no">订单号：%s</string>
-    <string name="prompt_order_times">次数：%d</string>
-    <string name="prompt_order_total_amount">总数量：%d件</string>
-    <string name="prompt_order_status">状态：%s</string>
-    <string name="prompt_order_delivery_date">发货日期：%s</string>
-    <string name="prompt_order_arrival_date">到货日期：%s</string>
+    <string name="prompt_order">订单号:%1$s 发货次数:%2$d</string>
+    <string name="prompt_order_no">订单号:%1$s</string>
+    <string name="prompt_order_times">发货次数:%1$d</string>
+    <string name="prompt_order_total_amount">总数量:%1$d件</string>
+    <string name="prompt_order_status">状态:%s</string>
+    <string name="prompt_order_delivery_date">发货日期:%1$s</string>
+    <string name="prompt_order_arrival_date">到货日期:%1$s</string>
+
 
 
     <string name="add">新增</string>
@@ -105,17 +111,22 @@
     <string name="pwd_retry_password">再输一遍</string>
     <string name="pwd_confirm">确认</string>
     <string name="pwd_err_invalid_retry_password">密码不一致</string>
-    <string name="pwd_err_invalid_password">密码太短</string>
+    <string name="pwd_err_invalid_password">密码长度至少6位</string>
 
 
     <string name="prompt_select_begin_date">选择开始时间</string>
     <string name="prompt_select_end_date">选择结束时间</string>
 
     <string name="error_sever_exception">服务端异常</string>
+    <string name="error_invalid_qrcode">无效的二维码</string>
 
     <string name="error_xxx">An error message</string>
     <string name="msg_xxx">A regular information message</string>
     <string name="title_xxx">A title, i.e. a dialog title</string>
     <string name="action_xxx">An action such as "Save" or "Create"</string>
+
+    <string name="launcher_icon_dpi">m-160-48x48,h-240-72x72,xh-320-96x96,xxh-480-144x144,xxxh-640-192x192</string>
+    <string name="action_dialog_tab_dpi">m-160-24x24,h-240-36x36,xh-320-48x48,xxh-480-72x72,xxxh-640-96x96</string>
+    <string name="small_icon_dpi">m-160-16x16,h-240-24x24,xh-320-32x32,xxh-480-48x48,xxxh-640-64x64</string>
 
 </resources>

@@ -23,6 +23,9 @@
                 android:id="@+id/et_item_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:layout_weight="1"
                 android:hint="输入型号或扫码"/>
 
             <ImageButton
@@ -108,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/queryZone"
-        android:background="#0000cc" >
+        android:background="@color/dark_gray" >
 
         <TextView
             style="@style/ListCell"
@@ -132,7 +135,6 @@
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
         android:layout_below="@id/header"
-        android:scrollbars="vertical"
-        android:divider = "@null"/>
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

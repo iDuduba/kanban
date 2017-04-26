@@ -37,6 +37,7 @@ import wang.laic.kanban.models.OpEnum;
 import wang.laic.kanban.models.OrderStatusEnum;
 import wang.laic.kanban.models.Part;
 import wang.laic.kanban.network.HttpClient;
+import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.PartAnswer;
 import wang.laic.kanban.network.message.Question;
 
@@ -47,6 +48,7 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.tv_part_no) TextView tvPartNo;
     @BindView(R.id.tv_part_category) TextView tvCategory;
     @BindView(R.id.tv_part_stock) TextView tvStock;
+    @BindView(R.id.tv_part_description) TextView tvDescription;
     @BindView(R.id.et_quantity) EditText etQuantity;
 
     BeepManager beepManager;
@@ -55,10 +57,11 @@ public class ScanPartActivity extends BaseActivity {
 
     private OpEnum[] mItems = new OpEnum[] {OpEnum.OUT, OpEnum.LOSS, OpEnum.EXOUT};
 
-    private Part mPart = new Part();
+//    private Part mPart = new Part();
     private List<Part> mOuts = new ArrayList<>();
 
     private OpEnum mOpType = OpEnum.OUT;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +97,23 @@ public class ScanPartActivity extends BaseActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            if(result.getText() == null || result.getText().equals(lastText)) {
+//            if(result.getText() == null || result.getText().equals(lastText)) {
+//                return;
+//            }
+            String scanText = result.getText();
+            if(scanText == null || scanText.isEmpty()) {
                 return;
             }
+            viewBarcodeScanner.pause();
 
-            lastText = result.getText();
+            lastText = scanText;
             tvModel.setText(lastText);
 
             beepManager.playBeepSoundAndVibrate();
 
+            mProgress.show();
             okHttp_get_part(lastText);
 
-            viewBarcodeScanner.pause();
             //Added preview of scanned barcode
 //            ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
 //            imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
@@ -128,17 +136,19 @@ public class ScanPartActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueryPartEvent(PartAnswer event) {
-        Log.i(Constants.TAG, event.getCode() + " -> " + getString(R.string.lab_part_code));
+        mProgress.dismiss();
         if(event.getCode() == 0) {
             List<Part> items = event.getBody();
             if(items != null && items.size() > 0) {
                 tvModel.setText(items.get(0).getModel());
                 tvPartNo.setText(items.get(0).getPartNo());
                 tvCategory.setText(items.get(0).getCategory());
-                tvStock.setText("" + items.get(0).getQuantity());
+                tvStock.setText("" + items.get(0).getInvQuantity());
+                tvDescription.setText(items.get(0).getDescription());
 
                 etQuantity.setSelectAllOnFocus(true);
                 etQuantity.requestFocus();
+                etQuantity.setSelected(true);
             }
         } else {
             String errorMessage = event.getMessage();
@@ -146,9 +156,15 @@ public class ScanPartActivity extends BaseActivity {
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showMessage(errorMessage);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFailureEvent(Failure failure) {
+        if(failure.getBody().compareTo("/part") == 0) {
+            mProgress.dismiss();
+            showMessage(failure.getMessage());
         }
     }
 
@@ -158,23 +174,47 @@ public class ScanPartActivity extends BaseActivity {
 
     @OnClick(R.id.btn_resume)
     public void resume() {
-        mPart.setModel(tvModel.getText().toString());
-        mPart.setPartNo(tvPartNo.getText().toString());
-        mPart.setCategory(tvCategory.getText().toString());
-        mPart.setQuantity(Integer.parseInt(etQuantity.getText().toString()));
+        viewBarcodeScanner.resume();
 
-        mOuts.add(mPart);
-        mPart = new Part();
+        String sStock = tvStock.getText().toString();
+        if(sStock == null || sStock.isEmpty()) {
+            showMessage("没有单品信息");
+            return;
+        }
+        String sQuantity = etQuantity.getText().toString();
+        if(sQuantity == null || sQuantity.isEmpty()) {
+            etQuantity.setError("出库数量不能为空");
+            return;
+        }
+        int iStock = Integer.parseInt(sStock);
+        int iQuantity = Integer.parseInt(sQuantity);
+        if(iQuantity > iStock) {
+            etQuantity.setError("出库数量(" + sQuantity + ")不能超过库存量(" + sStock + ")");
+            return;
+        }
+
+        Part part = new Part();
+        part.setModel(tvModel.getText().toString());
+        part.setPartNo(tvPartNo.getText().toString());
+        part.setCategory(tvCategory.getText().toString());
+        part.setQuantity(Integer.parseInt(etQuantity.getText().toString()));
+        part.setDescription(tvDescription.getText().toString());
+
+        if(mOuts.contains(part)) {
+            mOuts.remove(part);
+        }
+        mOuts.add(part);
 
         resetProdInfo();
-
-        viewBarcodeScanner.resume();
     }
 
     @OnClick(R.id.btn_commit)
     public void commit() {
-        KanbanApplication app = (KanbanApplication)getApplication();
-        app.setParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
+        if(mOuts == null || mOuts.size() == 0) {
+            showMessage("没有待出库的单品数据");
+            return;
+        }
+        setAppParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
 
         Intent intent = new Intent(this, StockOutActivity.class);
         intent.putExtra(Constants.K_STOCK_OUT_OP_TYPE, mOpType.getType());
@@ -185,6 +225,12 @@ public class ScanPartActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         viewBarcodeScanner.resume();
+
+        mOuts = (List<Part>)getAppParameter(Constants.K_STOCK_OUT_PART_LIST);
+        if(mOuts == null) {
+            lastText = null;
+            mOuts = new ArrayList<>();
+        }
     }
 
     @Override
@@ -210,6 +256,7 @@ public class ScanPartActivity extends BaseActivity {
         tvPartNo.setText(null);
         tvCategory.setText(null);
         tvStock.setText(null);
+        tvDescription.setText(null);
     }
 
     public void onOpRadioButtonClicked(View view) {

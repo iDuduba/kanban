@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -31,7 +32,7 @@ import wang.laic.kanban.Constants;
 import wang.laic.kanban.R;
 import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.utils.KukuUtils;
+import wang.laic.kanban.utils.KukuUtil;
 
 /**
  * Created by duduba on 2017/3/31.
@@ -129,7 +130,7 @@ public class HttpClient {
         StringBuilder x = new StringBuilder();
         x.append(apiAppId).append(decodedBody).append(apiSecretKey);
 
-        String signString = KukuUtils.md5Digest(x.toString());
+        String signString = KukuUtil.md5Digest(x.toString());
         question.setSign(signString);
         question.setAppid(apiAppId);
 
@@ -156,7 +157,16 @@ public class HttpClient {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
-                    EventBus.getDefault().post(gson.fromJson(response.body().charStream(), answer));
+                    String body = response.body().string();
+                    Log.i(Constants.TAG, "<<<< " + body);
+                    try {
+                        EventBus.getDefault().post(gson.fromJson(body, answer));
+                    } catch(JsonParseException e) {
+                        Failure failure = new Failure();
+                        failure.setBody(reqUrl);
+                        failure.setMessage(e.getLocalizedMessage());
+                        EventBus.getDefault().post(failure);
+                    }
                 } else {
                     Log.e(Constants.TAG, "Unexpected code " + response);
                     Failure failure = new Failure();

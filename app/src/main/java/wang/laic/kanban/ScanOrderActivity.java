@@ -18,6 +18,7 @@ public class ScanOrderActivity extends BaseActivity {
     @BindView(R.id.orderNo) EditText orderNoView;
     @BindView(R.id.orderTimes) EditText orderTimesView;
 
+    int mOrderFlag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +26,15 @@ public class ScanOrderActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        boolean isRevoked = getIntent().getBooleanExtra(Constants.KEY_ORDER_REVOKED_FLAG, false);
-        if(isRevoked) {
-            setToolbarTitle(getString(R.string.title_activity_order_revoked) + "(" + getCurrentCustomer().getName() + ")");
-        } else {
-            setToolbarTitle(getString(R.string.title_activity_order_in) + "(" + getCurrentCustomer().getName() + ")");
+        mOrderFlag = getIntent().getIntExtra(Constants.KEY_ORDER_FLAG, 0);
+        switch(mOrderFlag) {
+            case 1:
+                setToolbarTitle(getString(R.string.title_activity_order_revoked) + "(" + getCurrentCustomer().getName() + ")");
+                break;
+            case 2:
+                setToolbarTitle(getString(R.string.title_activity_order_in) + "(" + getCurrentCustomer().getName() + ")");
+                break;
         }
-
     }
 
     @OnClick(R.id.scannerButton)
@@ -46,7 +49,18 @@ public class ScanOrderActivity extends BaseActivity {
 
     @OnClick(R.id.confirm)
     public void onConfirm() {
+        String order = orderNoView.getText().toString();
+        String times = orderTimesView.getText().toString();
+        if(order.isEmpty()) {
+            orderNoView.setError("无效的订单号");
+            return;
+        }
+        if(times.isEmpty()) {
+            orderTimesView.setError("无效的次数");
+            return;
+        }
         Intent intent = new Intent(this, OrderActivity.class);
+        intent.putExtra(Constants.KEY_ORDER_FLAG, mOrderFlag);
         intent.putExtra(Constants.KEY_ORDER_NO, orderNoView.getText().toString());
         intent.putExtra(Constants.KEY_ORDER_TIMES, Integer.parseInt(orderTimesView.getText().toString()));
         startActivity(intent);
@@ -56,12 +70,15 @@ public class ScanOrderActivity extends BaseActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Log.d(Constants.TAG, "Cancelled scan");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "无效的二维码", Toast.LENGTH_LONG).show();
             } else {
-                Log.d(Constants.TAG, "Scanned");
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                orderNoView.setText(result.getContents());
+                String content = result.getContents();
+                String[] c = content.split("-");
+                orderNoView.setText(c[0]);
+                if(c.length > 1) {
+                    orderTimesView.setText(c[1]);
+                    onConfirm();
+                }
             }
         } else {
             // This is important, otherwise the result will not be passed to the fragment

@@ -1,11 +1,12 @@
 package wang.laic.kanban;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,15 +21,17 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import wang.laic.kanban.models.Order;
 import wang.laic.kanban.models.OrderItem;
+import wang.laic.kanban.models.OrderKey;
 import wang.laic.kanban.models.OrderStatusEnum;
 import wang.laic.kanban.network.HttpClient;
-import wang.laic.kanban.network.message.OrderAnswer;
+import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.OrderDetailAnswer;
+import wang.laic.kanban.network.message.OrderEntryCancelAnswer;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.utils.KukuUtils;
-import wang.laic.kanban.views.MyLinearItemDecoration;
+import wang.laic.kanban.utils.KukuUtil;
 import wang.laic.kanban.views.adapters.PartAdapter;
 
 public class OrderActivity extends BaseActivity {
@@ -46,6 +49,11 @@ public class OrderActivity extends BaseActivity {
     @BindView(R.id.arrivalDate) TextView arrivalDateView;
     @BindView(R.id.confirm) Button confirmButton;
 
+    private OrderStatusEnum mOrderStatus;
+    private OrderKey orderKey = new OrderKey();
+
+    private int mOrderFlag = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +66,14 @@ public class OrderActivity extends BaseActivity {
         setToolbarTitle(getString(R.string.title_activity_order) + "(" + getCurrentCustomer().getName() + ")");
 
         Intent intent = getIntent();
-        String orderNo = intent.getStringExtra(Constants.KEY_ORDER_NO);
-        int times = intent.getIntExtra(Constants.KEY_ORDER_TIMES, 1);
 
-        orderNoView.setText(String.format(getString(R.string.prompt_order_no), orderNo));
-        orderTimesView.setText(String.format(getString(R.string.prompt_order_times), times));
+        mOrderFlag = getIntent().getIntExtra(Constants.KEY_ORDER_FLAG, 0);
+
+        orderKey.setOrderNo(intent.getStringExtra(Constants.KEY_ORDER_NO));
+        orderKey.setDeliveryNumber(intent.getIntExtra(Constants.KEY_ORDER_TIMES, 1));
+
+        orderNoView.setText(String.format(getString(R.string.prompt_order_no), orderKey.getOrderNo()));
+        orderTimesView.setText(String.format(getString(R.string.prompt_order_times), orderKey.getDeliveryNumber()));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -71,14 +82,15 @@ public class OrderActivity extends BaseActivity {
         recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.addItemDecoration(new MyLinearItemDecoration(this, MyLinearItemDecoration.VERTICAL_LIST));
 
-        okHttp_order_detail(orderNo, times);
+        mProgress.show();
+        okHttp_order_detail(orderKey);
     }
 
-    private void okHttp_order_detail(String orderNo, int times) {
+    private void okHttp_order_detail(OrderKey orderKey) {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
-        body.put("orderNo", orderNo);
-        body.put("deliveryNumber", times);
+        body.put("orderNo", orderKey.getOrderNo());
+        body.put("deliveryNumber", orderKey.getDeliveryNumber());
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -87,37 +99,45 @@ public class OrderActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderDetailEvent(OrderDetailAnswer event) {
+        mProgress.dismiss();
         if(event.getCode() == 0) {
             if(event.getBody() != null && event.getBody().size() > 0) {
                 fill(event.getBody().get(0));
             }
         } else {
-            Log.i(Constants.TAG, "code = " + event.getCode());
             String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code = " + event.getCode() + " >" + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showMessage(errorMessage);
+            finish();
         }
     }
 
     private void fill(Order order) {
-        OrderStatusEnum os = OrderStatusEnum.valueOf(order.getStatus());
-        orderStatusView.setText(String.format(getString(R.string.prompt_order_status), os.getBackName()));
+        mOrderStatus = OrderStatusEnum.valueOf(order.getStatus());
+        orderStatusView.setText(String.format(getString(R.string.prompt_order_status), mOrderStatus.getBackName()));
         if(order.getDeliveryDate() != null) {
-            deliveryDateView.setText(String.format(getString(R.string.prompt_order_delivery_date), KukuUtils.getFormatDate(order.getDeliveryDate())));
+            deliveryDateView.setText(String.format(getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate())));
         }
-        switch(os) {
+        switch(mOrderStatus) {
             case WAY:
                 confirmButton.setText(getString(R.string.lab_confirm_stock_in));
+                if(mOrderFlag == 2) {
+                    showMessage("订单尚未入库，不能撤销");
+                    confirmButton.setVisibility(View.GONE);
+                }
                 arrivalDateView.setVisibility(View.GONE);
                 break;
             case AOG:
                 confirmButton.setText(getString(R.string.lab_revoke_stock_in));
+                if(mOrderFlag == 1) {
+                    showMessage("订单已经入库，不能重复入库");
+                    confirmButton.setVisibility(View.GONE);
+                }
                 if(order.getArrivalDate() != null) {
-                    arrivalDateView.setText(String.format(getString(R.string.prompt_order_arrival_date), KukuUtils.getFormatDate(order.getArrivalDate())));
+                    arrivalDateView.setText(String.format(getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate())));
                 }
                 break;
             default:
@@ -134,6 +154,81 @@ public class OrderActivity extends BaseActivity {
 
         mAdapter = new PartAdapter(this, order.getItems());
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.confirm)
+    public void confirm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("确认提交数据?");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                okHttp_order_entry_or_cancel(orderKey);
+
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void okHttp_order_entry_or_cancel(OrderKey orderKey) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("customerCode", getCurrentCustomer().getCode());
+        body.put("orderNo", orderKey.getOrderNo());
+        body.put("deliveryNumber", orderKey.getDeliveryNumber());
+        Question<Map<String, Object>> msg = new Question<>();
+        msg.setBody(body);
+
+        mProgress.show();
+        switch(mOrderStatus) {
+            case WAY:
+                HttpClient.getInstance(this).doPost("/entry", msg, OrderEntryCancelAnswer.class);
+                break;
+            case AOG:
+                HttpClient.getInstance(this).doPost("/entryCancel", msg, OrderEntryCancelAnswer.class);
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onOrderEntryCancelEvent(OrderEntryCancelAnswer event) {
+        mProgress.dismiss();
+        if(event.getCode() == 0) {
+            switch(mOrderStatus) {
+                case WAY:
+                    showMessage("订单入库成功");
+                    break;
+                case AOG:
+                    showMessage("订单撤销成功");
+                    break;
+            }
+            finish();
+        } else {
+            String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code = " + event.getCode() + " >" + errorMessage);
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            showMessage(errorMessage);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFailureEvent(Failure failure) {
+        String url = failure.getBody();
+        if(url.compareTo("/orderDetail") == 0 ||
+                url.compareTo("/entry") == 0 ||
+                url.compareTo("/entryCancel") == 0) {
+
+            mProgress.dismiss();
+            Toast.makeText(OrderActivity.this, failure.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

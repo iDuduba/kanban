@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import wang.laic.kanban.models.Customer;
+import wang.laic.kanban.views.WebCallProgressDialog;
 
 
 /**
@@ -22,6 +25,8 @@ public class BaseActivity extends AppCompatActivity {
     private LinearLayout rootLayout;
     private Toolbar toolbar;
     private TextView toolbarTitle;
+
+    protected WebCallProgressDialog mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class BaseActivity extends AppCompatActivity {
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
         initToolbar();
+
+        mProgress = new WebCallProgressDialog(this, R.style.WebCallProgressDialog);
     }
 
     private void initToolbar() {
@@ -73,5 +80,24 @@ public class BaseActivity extends AppCompatActivity {
     protected Customer getCurrentCustomer() {
         KanbanApplication app = (KanbanApplication)getApplication();
         return (Customer) app.getParameter(Constants.KEY_CURRENT_CUSTOMER);
+    }
+
+    protected void showMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.show();
+    }
+
+    protected void setAppParameter(String key, Object value) {
+        KanbanApplication app = (KanbanApplication)getApplication();
+        app.setParameter(key, value);
+    }
+    protected void removeAppParameter(String key) {
+        KanbanApplication app = (KanbanApplication)getApplication();
+        app.removeParameter(key);
+    }
+    protected Object getAppParameter(String key) {
+        KanbanApplication app = (KanbanApplication)getApplication();
+        return app.getParameter(key);
     }
 }

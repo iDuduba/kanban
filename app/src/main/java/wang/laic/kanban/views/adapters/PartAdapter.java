@@ -13,6 +13,8 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import wang.laic.kanban.R;
 import wang.laic.kanban.models.OrderItem;
 
@@ -47,18 +49,15 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final OrderItem item = mDataset.get(position);
 
-        holder.txtPartModel.setText(item.getItemCode());
-        holder.txtPartNo.setText(item.getExtpn());
-        holder.txtPartCategory.setText(item.getDescription());
+        holder.txtIndex.setText(String.format("% 2d", position + 1));
+        holder.txtPartModel.setText(String.format("型号:%s",item.getItemCode()));
+        holder.txtPartNo.setText(String.format("零件号:%s",item.getExtpn()));
+        holder.txtPartDesc.setText(String.format("描述:%s",item.getDescription()));
         holder.txtPartQuantity.setText(String.valueOf(item.getSendQuantity()));
 
-//        holder.txtPartModel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                remove(item);
-//            }
-//        });
-//
+        if(position % 2 != 0) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
     }
 
     @Override
@@ -88,24 +87,22 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         // each data item is just a string in this case
-        public TextView txtPartModel;
-        public TextView txtPartNo;
-        public TextView txtPartCategory;
-        public TextView txtPartQuantity;
+        @BindView(R.id.tv_index) TextView txtIndex;
+        @BindView(R.id.part_model) TextView txtPartModel;
+        @BindView(R.id.part_no) TextView txtPartNo;
+        @BindView(R.id.part_desc) TextView txtPartDesc;
+        @BindView(R.id.part_quantity) TextView txtPartQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            txtPartModel = (TextView) itemView.findViewById(R.id.part_model);
-            txtPartNo = (TextView) itemView.findViewById(R.id.part_no);
-            txtPartCategory = (TextView) itemView.findViewById(R.id.part_category);
-            txtPartQuantity = (TextView) itemView.findViewById(R.id.part_quantity);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(getClass().getSimpleName(), "onItemSelected: " + txtPartModel.getText().toString());
-                    Toast.makeText(view.getContext(), "onItemSelected: " + txtPartModel.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    Log.d(getClass().getSimpleName(), "onItemSelected: " + txtPartModel.getText().toString());
+//                    Toast.makeText(view.getContext(), "onItemSelected: " + txtPartModel.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

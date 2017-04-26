@@ -34,4 +34,7 @@ public class KanbanApplication extends Application {
     public Object getParameter(String key) {
         return cache.get(key);
     }
+    public void removeParameter(String key) {
+        cache.remove(key);
+    }
 }

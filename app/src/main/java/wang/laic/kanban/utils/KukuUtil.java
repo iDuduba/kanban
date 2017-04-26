@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by duduba on 2017/4/11.
  */
 
-public class KukuUtils {
+public class KukuUtil {
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private static DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");

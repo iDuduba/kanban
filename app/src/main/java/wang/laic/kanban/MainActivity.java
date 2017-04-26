@@ -1,20 +1,27 @@
 package wang.laic.kanban;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,21 +34,29 @@ import wang.laic.kanban.models.Customer;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.CustomersAnswer;
 import wang.laic.kanban.network.message.Question;
+import wang.laic.kanban.views.adapters.OrderAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.spinner_customers) Spinner mCustomersView;
+    @BindView(R.id.tv_login_info) TextView tvLoginInfo;
 
     List<Customer> customers;
+
+    private long clickTime = 0; // 第一次点击的时间
+
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
 
         ButterKnife.bind(this);
 
         EventBus.getDefault().register(this);
+
+        preferences = getSharedPreferences(Constants.SHARED_PREFERENCE, MODE_APPEND);
 
         mCustomersView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -57,8 +72,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        KanbanApplication app = (KanbanApplication)getApplication();
-        String user = (String)app.getParameter(Constants.KEY_CURRENT_USER);
+//        KanbanApplication app = (KanbanApplication)getApplication();
+//        String user = (String)app.getParameter(Constants.KEY_CURRENT_USER);
+
+        String user = preferences.getString(Constants.PREFERENCE_USER, "");
+        String loginTime = preferences.getString(Constants.PREFERENCE_LOGIN_TIME, "");
+
+        String loginInfoTemplate = getString(R.string.lab_login_info);
+        String loginInfo = String.format(loginInfoTemplate, user, loginTime);
+        tvLoginInfo.setText(loginInfo);
+
         okHttp_getCustomers(user);
     }
 
@@ -78,15 +101,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CustomersAnswer event) {
-        Log.i(Constants.TAG, "code = " + event.getCode());
-        for(Customer customer : event.getBody()) {
-            Log.i(Constants.TAG, customer.toString());
+    public void onCustomersEvent(CustomersAnswer event) {
+        if(event.getCode() == 0) {
+            customers = event.getBody();
+            ArrayAdapter<Customer> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, customers);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mCustomersView.setAdapter(adapter);
+        } else {
+            Log.i(Constants.TAG, "code = " + event.getCode());
+            String errorMessage = event.getMessage();
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
         }
-        customers = event.getBody();
-        ArrayAdapter<Customer> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, customers);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCustomersView.setAdapter(adapter);
     }
 
     private boolean isNetworkConnected() {
@@ -116,13 +146,14 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_in_order)
     public void onStockIn() {
         Intent intent = new Intent(this, ScanOrderActivity.class);
+        intent.putExtra(Constants.KEY_ORDER_FLAG, 1);
         startActivity(intent);
     }
 
     @OnClick(R.id.btn_revoked_order)
     public void onRevokedOrder() {
         Intent intent = new Intent(this, ScanOrderActivity.class);
-        intent.putExtra(Constants.KEY_ORDER_REVOKED_FLAG, true);
+        intent.putExtra(Constants.KEY_ORDER_FLAG, 2);
         startActivity(intent);
     }
 
@@ -136,6 +167,66 @@ public class MainActivity extends AppCompatActivity {
     public void onQueryFlow() {
         Intent intent = new Intent(this, FlowActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.tv_logout)
+    public void onLogout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("是否退出当前用户?");
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove(Constants.PREFERENCE_USER);
+                editor.remove(Constants.PREFERENCE_LOGIN_TIME);
+                editor.commit();
+
+                KanbanApplication app = (KanbanApplication)getApplication();
+                app.removeParameter(Constants.KEY_CURRENT_USER);
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+                finish();
+            }
+        });
+        builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 是否触发按键为back键
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        } else { // 如果不是back键正常响应
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            Toast.makeText(this, "再按一次后退键退出程序", Toast.LENGTH_SHORT).show();
+            clickTime = System.currentTimeMillis();
+        } else {
+            this.finish();
+        }
+    }
+
+    private void showMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
 }

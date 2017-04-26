@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -22,9 +23,8 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -38,12 +38,12 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +52,7 @@ import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.LoginAnswer;
 import wang.laic.kanban.network.message.Question;
 import wang.laic.kanban.network.message.RegisterAnswer;
-import wang.laic.kanban.utils.KukuUtils;
+import wang.laic.kanban.utils.KukuUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_PHONE_STATE;
@@ -80,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @BindView(R.id.login_form) View mLoginFormView;
     @BindView(R.id.sign_up) TextView mSignUpView;
 
+
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +91,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         ButterKnife.bind(this);
 
         EventBus.getDefault().register(this);
+
+        preferences = getSharedPreferences(Constants.SHARED_PREFERENCE, MODE_APPEND);
 
         if(mayRequestPhoneState() == true) {
             TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
@@ -366,7 +371,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Map<String, Object> body = new HashMap<>();
         body.put("userCode", user);
         body.put("IMEI", imei);
-        body.put("password", KukuUtils.md5Digest(password));
+        body.put("password", KukuUtil.md5Digest(password));
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -381,6 +386,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(event.getCode() == 0) {
 //            Log.i(TAG, "session = " + event.getBody().get("session"));
 
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Constants.PREFERENCE_USER, mUserView.getText().toString());
+            editor.putString(Constants.PREFERENCE_LOGIN_TIME, DateTime.now().toString("HH:mm"));
+            editor.commit();
+
             KanbanApplication app = (KanbanApplication)getApplication();
             app.setParameter(Constants.KEY_CURRENT_USER, mUserView.getText().toString());
 //            app.setParameter(Constants.KEY_SESSION, event.getBody().get("session"));
@@ -389,8 +399,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             startActivity(intent);
             finish();
         } else {
-            mPasswordView.setError(getString(R.string.error_incorrect_password));
-            mPasswordView.requestFocus();
+            Log.i(Constants.TAG, "code = " + event.getCode());
+            String errorMessage = event.getMessage();
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            showMessage(errorMessage);
         }
     }
 
@@ -409,15 +423,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Log.i(TAG, "code = " + event.getCode());
         showProgress(false);
 
-        switch(event.getCode()) {
-            case 0:
-                Log.i(TAG, "register successful.");
-                Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-                mPasswordView.requestFocus();
-                break;
-            default:
-                Toast.makeText(this, "注册失败", Toast.LENGTH_SHORT).show();
-                break;
+        if(event.getCode() == 0) {
+            showMessage(getString(R.string.device_register_success));
+            mPasswordView.requestFocus();
+        } else {
+            Log.i(Constants.TAG, "code = " + event.getCode());
+            String errorMessage = event.getMessage();
+            if(event.getCode() == 9999) {
+                errorMessage = getString(R.string.error_sever_exception);
+            }
+            showMessage(errorMessage);
         }
     }
 
@@ -426,5 +441,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         finish();
     }
 
+    private void showMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 }
 

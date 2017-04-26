@@ -29,9 +29,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import wang.laic.kanban.network.HttpClient;
+import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.FlowAnswer;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.utils.KukuUtils;
+import wang.laic.kanban.utils.KukuUtil;
 import wang.laic.kanban.views.MyLinearItemDecoration;
 import wang.laic.kanban.views.adapters.FlowAdapter;
 
@@ -90,10 +91,8 @@ public class FlowActivity extends BaseActivity {
         if(result != null) {
             if(result.getContents() == null) {
                 Log.d(Constants.TAG, "Cancelled scan");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                showMessage(getString(R.string.error_invalid_qrcode));
             } else {
-                Log.d(Constants.TAG, "Scanned");
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 tvItemCode.setText(result.getContents());
             }
         } else {
@@ -104,6 +103,7 @@ public class FlowActivity extends BaseActivity {
 
     @OnClick(R.id.search)
     public void onSarch() {
+        mProgress.show();
         okHttp_flow_query();
     }
 
@@ -121,18 +121,27 @@ public class FlowActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderDetailEvent(FlowAnswer event) {
+        mProgress.dismiss();
         if(event.getCode() == 0) {
             mAdapter = new FlowAdapter(this, event.getBody());
             rvFlowList.setAdapter(mAdapter);
         } else {
-            Log.i(Constants.TAG, "code = " + event.getCode());
             String errorMessage = event.getMessage();
+            Log.i(Constants.TAG, "code = " + event.getCode() + " >" + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
             Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFailureEvent(Failure failure) {
+        if(failure.getBody().compareTo("/stockflow") == 0) {
+            mProgress.dismiss();
+            Toast.makeText(FlowActivity.this, failure.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -165,7 +174,7 @@ public class FlowActivity extends BaseActivity {
     @OnClick(R.id.tv_begin_date)
     public void onBeginDate() {
 //        DateTime now = DateTime.now();
-        DateTime initDate = KukuUtils.parse(tvBeginDate.getText().toString());
+        DateTime initDate = KukuUtil.parse(tvBeginDate.getText().toString());
 
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
         new DatePickerDialog(FlowActivity.this,
@@ -181,7 +190,7 @@ public class FlowActivity extends BaseActivity {
 
     @OnClick(R.id.tv_end_date)
     public void onEndDate() {
-        DateTime initDate = KukuUtils.parse(tvEndDate.getText().toString());
+        DateTime initDate = KukuUtil.parse(tvEndDate.getText().toString());
 
         new DatePickerDialog(FlowActivity.this,
                 new DatePickerDialog.OnDateSetListener() {

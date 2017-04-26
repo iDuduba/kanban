@@ -2,7 +2,6 @@ package wang.laic.kanban.views.adapters;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +12,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import wang.laic.kanban.Constants;
-import wang.laic.kanban.OrderActivity;
 import wang.laic.kanban.R;
 import wang.laic.kanban.models.Flow;
 import wang.laic.kanban.models.OpEnum;
-import wang.laic.kanban.models.Order;
-import wang.laic.kanban.models.OrderStatusEnum;
-import wang.laic.kanban.utils.KukuUtils;
+import wang.laic.kanban.utils.KukuUtil;
 
 /**
  * Created by duduba on 2017/4/10.
@@ -61,9 +56,13 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Flow item = items.get(position);
-        holder.tvFlowDate.setText(KukuUtils.getFormatDate(item.getOpDate()));
+        holder.tvFlowDate.setText(KukuUtil.getFormatDate(item.getOpDate()));
         holder.tvFlowType.setText(OpEnum.getName(item.getOpType()));
         holder.tvFlowQuantity.setText("" + item.getQuantity());
+
+        if(position % 2 != 0) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
     }
 
     @Override

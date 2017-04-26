@@ -4,21 +4,21 @@ package wang.laic.kanban.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import wang.laic.kanban.Constants;
 import wang.laic.kanban.OrderActivity;
 import wang.laic.kanban.R;
 import wang.laic.kanban.models.Order;
 import wang.laic.kanban.models.OrderStatusEnum;
-import wang.laic.kanban.utils.KukuUtils;
+import wang.laic.kanban.utils.KukuUtil;
 
 /**
  * Created by duduba on 2017/4/10.
@@ -29,25 +29,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView tvOrderNo;
-        public TextView tvOrderTimes;
-        public TextView tvStatus;
-        public TextView tvDeliveryDate;
+        @BindView(R.id.tv_index) TextView tvIndex;
+        @BindView(R.id.tv_order_no) TextView tvOrderNo;
+        @BindView(R.id.tv_order_times) TextView tvOrderTimes;
+        @BindView(R.id.tv_delivery_date) TextView tvDeliveryDate;
+        @BindView(R.id.tv_arrival_date) TextView tvArrivalDate;
+        @BindView(R.id.tv_order_status) TextView tvOrderStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvOrderNo = (TextView) itemView.findViewById(R.id.orderNo);
-            tvOrderTimes = (TextView) itemView.findViewById(R.id.orderTimes);
-            tvStatus = (TextView) itemView.findViewById(R.id.orderStatus);
-            tvDeliveryDate = (TextView) itemView.findViewById(R.id.deliveryDate);
+
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, OrderActivity.class);
-                    intent.putExtra(Constants.KEY_ORDER_NO, tvOrderNo.getText().toString());
-                    intent.putExtra(Constants.KEY_ORDER_TIMES, Integer.parseInt(tvOrderTimes.getText().toString()));
-                    mContext.startActivity(intent);
+                    Order order = (Order)view.getTag();
+                    if(order != null) {
+                        Intent intent = new Intent(mContext, OrderActivity.class);
+                        intent.putExtra(Constants.KEY_ORDER_FLAG, 0);
+                        intent.putExtra(Constants.KEY_ORDER_NO, order.getOrderCompId().getOrderNo());
+                        intent.putExtra(Constants.KEY_ORDER_TIMES,order.getOrderCompId().getDeliveryNumber());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
 
@@ -65,7 +69,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_new, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -74,12 +78,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Order order = items.get(position);
+        holder.itemView.setTag(order);
 
-        holder.tvOrderNo.setText(order.getOrderCompId().getOrderNo());
-        holder.tvOrderTimes.setText("" + order.getOrderCompId().getDeliveryNumber());
-        holder.tvStatus.setText(OrderStatusEnum.getBackName(order.getStatus()));
-        holder.tvDeliveryDate.setText(KukuUtils.getFormatDate(order.getDeliveryDate()));
+        OrderStatusEnum orderStatus = OrderStatusEnum.valueOf(order.getStatus());
 
+        holder.tvIndex.setText(String.format("% 2d", position + 1));
+        String orderNo = String.format(mContext.getString(R.string.prompt_order_no), order.getOrderCompId().getOrderNo());
+        holder.tvOrderNo.setText(orderNo);
+        String orderTimes = String.format(mContext.getString(R.string.prompt_order_times), order.getOrderCompId().getDeliveryNumber());
+        holder.tvOrderTimes.setText(orderTimes);
+
+        String deliveryDate = String.format(mContext.getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));
+        holder.tvDeliveryDate.setText(deliveryDate);
+        if(orderStatus == OrderStatusEnum.AOG) {
+            String arrivalDate = String.format(mContext.getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate()));
+            holder.tvArrivalDate.setText(arrivalDate);
+        } else {
+            holder.tvArrivalDate.setVisibility(View.GONE);
+        }
+        holder.tvOrderStatus.setText(orderStatus.getName());
+
+        if(position % 2 != 0) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
     }
 
     @Override

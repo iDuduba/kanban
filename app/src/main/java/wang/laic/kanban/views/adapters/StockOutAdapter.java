@@ -17,6 +17,8 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import wang.laic.kanban.R;
 import wang.laic.kanban.models.OpEnum;
 import wang.laic.kanban.models.Part;
@@ -75,10 +77,15 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
             }
         });
 
-        holder.txtPartModel.setText(item.getModel());
-        holder.txtPartNo.setText(item.getPartNo());
-        holder.txtPartCategory.setText(item.getCategory());
+        holder.txtIndex.setText(String.format("% 2d", position + 1));
+        holder.txtPartModel.setText(String.format("型号:%s", item.getModel()));
+        holder.txtPartNo.setText(String.format("零件号:%s", item.getPartNo()));
+        holder.txtPartCategory.setText(String.format("小类:%s", item.getCategory()));
         holder.etPartQuantity.setText(String.valueOf(item.getQuantity()));
+
+        if(position % 2 != 0) {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
 
 //        holder.txtPartModel.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -115,30 +122,26 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        SwipeLayout swipeLayout;
-        Button buttonDelete;
+        @BindView(R.id.swipe) SwipeLayout swipeLayout;
+        @BindView(R.id.delete) Button buttonDelete;
 
         // each data item is just a string in this case
-        public TextView txtPartModel;
-        public TextView txtPartNo;
-        public TextView txtPartCategory;
-        public EditText etPartQuantity;
+        @BindView(R.id.tv_index) TextView txtIndex;
+        @BindView(R.id.tv_part_model) TextView txtPartModel;
+        @BindView(R.id.tv_part_no) TextView txtPartNo;
+        @BindView(R.id.tv_part_category) TextView txtPartCategory;
+        @BindView(R.id.tv_part_quantity) EditText etPartQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe);
-            buttonDelete = (Button) itemView.findViewById(R.id.delete);
 
-            txtPartModel = (TextView) itemView.findViewById(R.id.part_model);
-            txtPartNo = (TextView) itemView.findViewById(R.id.part_no);
-            txtPartCategory = (TextView) itemView.findViewById(R.id.part_category);
-            etPartQuantity = (EditText) itemView.findViewById(R.id.part_quantity);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(getClass().getSimpleName(), "onItemSelected: " + txtPartModel.getText().toString());
-                    Toast.makeText(view.getContext(), "onItemSelected: " + txtPartModel.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    Log.d(getClass().getSimpleName(), "onItemSelected: " + txtPartModel.getText().toString());
+//                    Toast.makeText(view.getContext(), "onItemSelected: " + txtPartModel.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
