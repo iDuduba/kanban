@@ -56,11 +56,12 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Flow item = items.get(position);
+
         holder.tvFlowDate.setText(KukuUtil.getFormatDate(item.getOpDate()));
         holder.tvFlowType.setText(OpEnum.getName(item.getOpType()));
         holder.tvFlowQuantity.setText("" + item.getQuantity());
 
-        if(position % 2 != 0) {
+        if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
     }

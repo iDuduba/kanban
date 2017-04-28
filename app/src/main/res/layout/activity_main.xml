@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="wang.laic.kanban.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_customers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/lab_customer_list"
-        app:layout_constraintTop_toTopOf="@+id/spinner_customers"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner_customers" />
+    <include layout="@layout/header" />
 
-    <Spinner
-        android:id="@+id/spinner_customers"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:spinnerMode="dialog"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:prompt="@string/prompt_select_customer"
-        android:layout_marginStart="8dp"
-        tools:layout_editor_absoluteY="5dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/tv_customers"
-        android:layout_marginLeft="8dp" />
+    <View
+        android:id="@+id/v_line"
+        android:layout_below="@+id/ll_login_zone"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="?android:attr/listDivider" />
 
-    <GridLayout
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_customer_zone"
+        android:layout_below="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_customers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lab_customer_list"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" />
+
+        <Spinner
+            android:id="@+id/spinner_customers"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:spinnerMode="dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/prompt_select_customer"
+            android:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp" />
+    </LinearLayout>
+
+    <android.support.v7.widget.GridLayout
+        android:layout_below="@+id/ll_customer_zone"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:columnCount="2"
-        android:orientation="horizontal"
-        android:rowCount="3"
-
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_customers"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginEnd="8dp">
+        app:orientation="horizontal"
+        app:columnCount="2"
+        app:rowCount="3"
+        android:visibility="visible">
 
         <Button
             android:id="@+id/btn_change_password"
@@ -91,6 +90,6 @@
             android:drawableTop="@drawable/main_flow_query"
             android:text="@string/lab_stock_flow_query" />
 
-    </GridLayout>
+    </android.support.v7.widget.GridLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

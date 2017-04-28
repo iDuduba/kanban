@@ -28,8 +28,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        @BindView(R.id.tv_index) TextView tvIndex;
+//        @BindView(R.id.tv_index) TextView tvIndex;
         @BindView(R.id.tv_order_no) TextView tvOrderNo;
         @BindView(R.id.tv_order_times) TextView tvOrderTimes;
         @BindView(R.id.tv_delivery_date) TextView tvDeliveryDate;
@@ -69,7 +68,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_new, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -82,23 +81,26 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
         OrderStatusEnum orderStatus = OrderStatusEnum.valueOf(order.getStatus());
 
-        holder.tvIndex.setText(String.format("% 2d", position + 1));
-        String orderNo = String.format(mContext.getString(R.string.prompt_order_no), order.getOrderCompId().getOrderNo());
-        holder.tvOrderNo.setText(orderNo);
-        String orderTimes = String.format(mContext.getString(R.string.prompt_order_times), order.getOrderCompId().getDeliveryNumber());
-        holder.tvOrderTimes.setText(orderTimes);
+//        holder.tvIndex.setText(String.format("% 2d", position + 1));
+//        String orderNo = String.format(mContext.getString(R.string.prompt_order_no), order.getOrderCompId().getOrderNo());
+        holder.tvOrderNo.setText(order.getOrderCompId().getOrderNo());
 
-        String deliveryDate = String.format(mContext.getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));
-        holder.tvDeliveryDate.setText(deliveryDate);
+//        String orderTimes = String.format(mContext.getString(R.string.prompt_order_times), order.getOrderCompId().getDeliveryNumber());
+        holder.tvOrderTimes.setText(""+order.getOrderCompId().getDeliveryNumber());
+
+//        String deliveryDate = String.format(mContext.getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));
+        holder.tvDeliveryDate.setText(KukuUtil.getFormatDate(order.getDeliveryDate()));
+
         if(orderStatus == OrderStatusEnum.AOG) {
-            String arrivalDate = String.format(mContext.getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate()));
-            holder.tvArrivalDate.setText(arrivalDate);
+//            String arrivalDate = String.format(mContext.getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate()));
+            holder.tvArrivalDate.setText(KukuUtil.getFormatDate(order.getArrivalDate()));
+            holder.tvOrderStatus.setTextColor(mContext.getResources().getColor(R.color.darkRed));
         } else {
             holder.tvArrivalDate.setVisibility(View.GONE);
         }
         holder.tvOrderStatus.setText(orderStatus.getName());
 
-        if(position % 2 != 0) {
+        if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
     }

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.joda.time.DateTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +33,6 @@ import wang.laic.kanban.models.Customer;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.CustomersAnswer;
 import wang.laic.kanban.network.message.Question;
-import wang.laic.kanban.views.adapters.OrderAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_new);
+        setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
 
@@ -169,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @OnClick(R.id.tv_logout)
+    @OnClick(R.id.ib_exit)
     public void onLogout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("是否退出当前用户?");
@@ -177,8 +175,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.remove(Constants.PREFERENCE_USER);
+//                editor.remove(Constants.PREFERENCE_USER);
                 editor.remove(Constants.PREFERENCE_LOGIN_TIME);
+                editor.putBoolean(Constants.PREFERENCE_LOGIN_STATUS, false);
                 editor.commit();
 
                 KanbanApplication app = (KanbanApplication)getApplication();

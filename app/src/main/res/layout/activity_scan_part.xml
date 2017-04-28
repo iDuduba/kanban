@@ -4,48 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
     tools:context="wang.laic.kanban.ScanPartActivity">
 
 
-    <RadioGroup
-        android:id="@+id/rg_op_type"
+    <LinearLayout
+        android:id="@+id/ll_input_zone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_alignParentTop="true">
 
-        <RadioButton
-            android:id="@+id/radio_op_out"
+        <RadioGroup
+            android:id="@+id/rg_op_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lab_op_out"
-            android:onClick="onOpRadioButtonClicked"
-            android:checked="true"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp">
 
-        <RadioButton
-            android:id="@+id/radio_op_loss"
+            <RadioButton
+                android:id="@+id/radio_op_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_op_out"
+                android:onClick="onOpRadioButtonClicked"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radio_op_loss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_op_loss"
+                android:onClick="onOpRadioButtonClicked" />
+
+            <RadioButton
+                android:id="@+id/radio_op_exout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lab_op_exout"
+                android:onClick="onOpRadioButtonClicked" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/et_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lab_op_loss"
-            android:onClick="onOpRadioButtonClicked" />
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:maxLines="1"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:hint="@string/lab_out_quantity" />
 
-        <RadioButton
-            android:id="@+id/radio_op_exout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lab_op_exout"
-            android:onClick="onOpRadioButtonClicked" />
-    </RadioGroup>
+    </LinearLayout>
+
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/barcode_scanner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/rg_op_type"
+        android:layout_below="@+id/ll_input_zone"
         android:layout_above="@+id/gl_part_info" />
         <!--app:zxing_scanner_layout="@layout/custom_barcode_scanner"-->
         <!--app:zxing_preview_scaling_strategy="fitXY"-->
@@ -57,13 +79,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:layout_above="@+id/ll_action_zone"
-        android:layout_toLeftOf="@+id/et_quantity"
         android:background="@drawable/rectangle_border"
         android:columnCount="4"
         android:rowCount="5">
 
         <TextView
             android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_code"/>
 
         <TextView
@@ -73,6 +95,7 @@
 
         <TextView
             android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_sku"/>
 
         <TextView
@@ -82,6 +105,7 @@
 
         <TextView
             android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_category"/>
 
         <TextView
@@ -91,6 +115,7 @@
 
         <TextView
             android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_description"/>
 
         <TextView
@@ -100,6 +125,7 @@
 
         <TextView
             android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_stock"/>
 
         <TextView
@@ -109,18 +135,6 @@
     </GridLayout>
 
 
-    <EditText
-        android:id="@+id/et_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/gl_part_info"
-        android:layout_alignBottom="@+id/gl_part_info"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:maxLines="1"
-        android:inputType="number"
-        android:textSize="16sp"
-        android:hint="@string/lab_out_quantity" />
 
     <LinearLayout
         android:orientation="horizontal"

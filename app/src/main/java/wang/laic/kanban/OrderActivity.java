@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,8 +73,11 @@ public class OrderActivity extends BaseActivity {
         orderKey.setOrderNo(intent.getStringExtra(Constants.KEY_ORDER_NO));
         orderKey.setDeliveryNumber(intent.getIntExtra(Constants.KEY_ORDER_TIMES, 1));
 
-        orderNoView.setText(String.format(getString(R.string.prompt_order_no), orderKey.getOrderNo()));
-        orderTimesView.setText(String.format(getString(R.string.prompt_order_times), orderKey.getDeliveryNumber()));
+        String xxx = String.format(getString(R.string.prompt_order_no), orderKey.getOrderNo());
+        orderNoView.setText(Html.fromHtml(xxx));
+
+        xxx = String.format(getString(R.string.prompt_order_times), orderKey.getDeliveryNumber());
+        orderTimesView.setText(Html.fromHtml(xxx));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -117,9 +121,11 @@ public class OrderActivity extends BaseActivity {
 
     private void fill(Order order) {
         mOrderStatus = OrderStatusEnum.valueOf(order.getStatus());
-        orderStatusView.setText(String.format(getString(R.string.prompt_order_status), mOrderStatus.getBackName()));
+        String xxx = String.format(getString(R.string.prompt_order_status), mOrderStatus.getBackName());
+        orderStatusView.setText(Html.fromHtml(xxx));
         if(order.getDeliveryDate() != null) {
-            deliveryDateView.setText(String.format(getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate())));
+            xxx = String.format(getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));
+            deliveryDateView.setText(Html.fromHtml(xxx));
         }
         switch(mOrderStatus) {
             case WAY:
@@ -137,7 +143,8 @@ public class OrderActivity extends BaseActivity {
                     confirmButton.setVisibility(View.GONE);
                 }
                 if(order.getArrivalDate() != null) {
-                    arrivalDateView.setText(String.format(getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate())));
+                    xxx = String.format(getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate()));
+                    arrivalDateView.setText(Html.fromHtml(xxx));
                 }
                 break;
             default:
@@ -150,7 +157,8 @@ public class OrderActivity extends BaseActivity {
         for(OrderItem item : order.getItems()) {
             sum += item.getSendQuantity();
         }
-        totalAmountView.setText(String.format(getString(R.string.prompt_order_total_amount), sum));
+        xxx = String.format(getString(R.string.prompt_order_total_amount), sum);
+        totalAmountView.setText(Html.fromHtml(xxx));
 
         mAdapter = new PartAdapter(this, order.getItems());
         recyclerView.setAdapter(mAdapter);

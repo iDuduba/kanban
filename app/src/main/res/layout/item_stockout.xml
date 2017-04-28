@@ -4,8 +4,10 @@
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@drawable/item_selector"
+    android:layout_marginBottom="1px"
+    android:elevation="5dp"
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
 
@@ -123,7 +125,7 @@
 
 
 
-        <EditText
+        <TextView
             android:id="@+id/tv_part_quantity"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -131,6 +133,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:textSize="20sp"
             android:text="1234"/>
 
     </RelativeLayout>

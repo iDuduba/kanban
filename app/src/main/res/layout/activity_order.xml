@@ -20,21 +20,19 @@
                 android:id="@+id/orderNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
+            <!--android:textColor="@color/darkRed"-->
             <TextView
                 android:id="@+id/orderTimes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/totalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
         </LinearLayout>
@@ -49,31 +47,35 @@
                 android:id="@+id/orderStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/deliveryDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="2"/>
             <TextView
                 android:id="@+id/arrivalDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkRed"
                 android:textSize="14sp"
                 android:layout_weight="2"/>
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:id="@+id/v_line"
+        android:layout_below="@+id/summery_zone"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="?android:attr/listDivider" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/part_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/summery_zone"
+        android:layout_below="@+id/v_line"
         android:layout_above="@+id/confirm"
         android:scrollbars="vertical" />
 

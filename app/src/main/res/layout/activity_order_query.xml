@@ -115,47 +115,47 @@
     </LinearLayout>
 
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/header"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/queryZone"-->
-        <!--android:background="@color/dark_gray" >-->
-
-        <!--<TextView-->
-            <!--style="@style/ListCell"-->
-            <!--android:layout_weight = "2"-->
-            <!--android:text = "订单号" />-->
-
-        <!--<TextView-->
-            <!--style="@style/ListCell"-->
-            <!--android:layout_weight = "1.5"-->
-            <!--android:text = "发货次数" />-->
-
-        <!--<TextView-->
-            <!--style="@style/ListCell"-->
-            <!--android:layout_weight = "1"-->
-            <!--android:text = "状态" />-->
-
-        <!--<TextView-->
-            <!--style="@style/ListCell"-->
-            <!--android:layout_weight = "2"-->
-            <!--android:text = "发货日期" />-->
-    <!--</LinearLayout>-->
-
-    <View
-        android:id="@+id/v_line"
-        android:layout_below="@id/queryZone"
+    <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginBottom="2dp"
-        android:background="?android:attr/listDivider" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/queryZone"
+        android:background="@color/dark_gray" >
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "2"
+            android:text = "订单号" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "1.5"
+            android:text = "发货次数" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "2"
+            android:text = "发/到货日期" />
+
+        <TextView
+            style="@style/ListCell"
+            android:layout_weight = "1"
+            android:text = "状态" />
+    </LinearLayout>
+
+    <!--<View-->
+        <!--android:id="@+id/v_line"-->
+        <!--android:layout_below="@id/queryZone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:layout_marginBottom="2dp"-->
+        <!--android:background="?android:attr/listDivider" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id = "@+id/orderList"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
-        android:layout_below="@id/v_line"
+        android:layout_below="@id/header"
         android:layout_alignParentBottom="true"
         android:scrollbars="vertical"
         android:divider = "@null"/>

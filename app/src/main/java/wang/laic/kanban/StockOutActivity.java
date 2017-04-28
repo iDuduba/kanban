@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -69,14 +70,15 @@ public class StockOutActivity extends BaseActivity {
 
         items = (List<Part>)getAppParameter(Constants.K_STOCK_OUT_PART_LIST);
 
-        String fm = getString(R.string.prompt_stock_out_1);
-        itemSizeView.setText(String.format(fm, items.size()));
-        fm = getString(R.string.prompt_stock_out_2);
+        String xxx = String.format(getString(R.string.prompt_stock_out_1), items.size());
+        itemSizeView.setText(Html.fromHtml(xxx));
+
         int sum = 0;
         for(Part part : items) {
             sum += part.getQuantity();
         }
-        partQuantityView.setText(String.format(fm, sum));
+        xxx = String.format(getString(R.string.prompt_stock_out_2), sum);
+        partQuantityView.setText(Html.fromHtml(xxx));
 
         // specify an adapter (see also next example)
         mAdapter = new StockOutAdapter(this, items);

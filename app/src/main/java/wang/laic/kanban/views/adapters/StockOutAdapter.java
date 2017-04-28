@@ -81,9 +81,9 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         holder.txtPartModel.setText(String.format("型号:%s", item.getModel()));
         holder.txtPartNo.setText(String.format("零件号:%s", item.getPartNo()));
         holder.txtPartCategory.setText(String.format("小类:%s", item.getCategory()));
-        holder.etPartQuantity.setText(String.valueOf(item.getQuantity()));
+        holder.txtPartQuantity.setText(String.valueOf(item.getQuantity()));
 
-        if(position % 2 != 0) {
+        if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
 
@@ -130,7 +130,7 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         @BindView(R.id.tv_part_model) TextView txtPartModel;
         @BindView(R.id.tv_part_no) TextView txtPartNo;
         @BindView(R.id.tv_part_category) TextView txtPartCategory;
-        @BindView(R.id.tv_part_quantity) EditText etPartQuantity;
+        @BindView(R.id.tv_part_quantity) TextView txtPartQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);

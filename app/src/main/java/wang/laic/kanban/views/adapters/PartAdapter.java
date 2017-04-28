@@ -55,7 +55,7 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
         holder.txtPartDesc.setText(String.format("描述:%s",item.getDescription()));
         holder.txtPartQuantity.setText(String.valueOf(item.getSendQuantity()));
 
-        if(position % 2 != 0) {
+        if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
     }

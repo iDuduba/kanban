@@ -8,6 +8,7 @@ public interface Constants {
     String TAG = "wang.laic.kanban.kuku";
 
     String SHARED_PREFERENCE = "wang.laic.kanban";
+    String PREFERENCE_LOGIN_STATUS = "kanban.login.status";
     String PREFERENCE_USER = "kanban.user";
     String PREFERENCE_LOGIN_TIME = "kanban.login.time";
 
