@@ -125,21 +125,25 @@
         <TextView
             style="@style/ListCell"
             android:layout_weight = "2"
+            android:textColor="@android:color/white"
             android:text = "订单号" />
 
         <TextView
             style="@style/ListCell"
             android:layout_weight = "1.5"
+            android:textColor="@android:color/white"
             android:text = "发货次数" />
 
         <TextView
             style="@style/ListCell"
             android:layout_weight = "2"
+            android:textColor="@android:color/white"
             android:text = "发/到货日期" />
 
         <TextView
             style="@style/ListCell"
             android:layout_weight = "1"
+            android:textColor="@android:color/white"
             android:text = "状态" />
     </LinearLayout>
 

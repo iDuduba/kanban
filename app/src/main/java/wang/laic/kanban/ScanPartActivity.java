@@ -149,6 +149,9 @@ public class ScanPartActivity extends BaseActivity {
                 etQuantity.setSelectAllOnFocus(true);
                 etQuantity.requestFocus();
                 etQuantity.setSelected(true);
+            } else {
+                showMessage("单品不存在");
+                viewBarcodeScanner.resume();
             }
         } else {
             String errorMessage = event.getMessage();
@@ -157,6 +160,7 @@ public class ScanPartActivity extends BaseActivity {
                 errorMessage = getString(R.string.error_sever_exception);
             }
             showMessage(errorMessage);
+            viewBarcodeScanner.resume();
         }
     }
 

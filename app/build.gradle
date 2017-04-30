@@ -8,14 +8,37 @@ android {
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        project.ext.set("archivesBaseName", "kanban-" + defaultConfig.versionName);
+//        project.ext.set("archivesBaseName", "kanban-" + defaultConfig.versionName);
     }
     buildTypes {
+        debug {
+            // 为了不和 release 版本冲突
+            applicationIdSuffix ".debug"
+
+            //自定义apk安装包名
+            applicationVariants.all { variant ->
+                variant.mergedFlavor.versionCode = gitVersionCode()
+                variant.mergedFlavor.versionName = gitVersionTag()
+                variant.outputs.each { output ->
+                    output.outputFile = new File(
+                            output.outputFile.parent + "/${variant.buildType.name}",
+                            "kanban-${variant.buildType.name}-v${variant.versionName}-${variant.productFlavors[0].name}-${releaseTime()}.apk".toLowerCase())
+                }
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        dev {
+            manifestPlaceholders = [channel: "dev"]
+        }
+        official {
+            manifestPlaceholders = [channel: "official"]
         }
     }
 }
@@ -43,4 +66,30 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.9'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+}
+
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+def gitVersionCode() {
+    def cmd = 'git rev-list HEAD --first-parent --count'
+    cmd.execute().text.trim().toInteger()
+}
+
+def gitVersionTag() {
+    def cmd = 'git describe --tags'
+    def version = cmd.execute().text.trim()
+
+    def pattern = "-(\\d+)-g"
+    def matcher = version =~ pattern
+
+    if (matcher) {
+        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
+    } else {
+        version = version + ".0"
+    }
+
+    return version
 }

@@ -63,6 +63,8 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
 
         if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.backgroundColor));
         }
     }
 

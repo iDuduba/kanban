@@ -49,7 +49,7 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final OrderItem item = mDataset.get(position);
 
-        holder.txtIndex.setText(String.format("% 2d", position + 1));
+        holder.txtIndex.setText(String.format("%02d", position + 1));
         holder.txtPartModel.setText(String.format("型号:%s",item.getItemCode()));
         holder.txtPartNo.setText(String.format("零件号:%s",item.getExtpn()));
         holder.txtPartDesc.setText(String.format("描述:%s",item.getDescription()));
@@ -57,6 +57,8 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
 
         if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.backgroundColor));
         }
     }
 

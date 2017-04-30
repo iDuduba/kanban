@@ -23,11 +23,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import wang.laic.kanban.models.Flow;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.Failure;
 import wang.laic.kanban.network.message.FlowAnswer;
@@ -123,8 +125,13 @@ public class FlowActivity extends BaseActivity {
     public void onOrderDetailEvent(FlowAnswer event) {
         mProgress.dismiss();
         if(event.getCode() == 0) {
+            List<Flow> flows = event.getBody();
             mAdapter = new FlowAdapter(this, event.getBody());
             rvFlowList.setAdapter(mAdapter);
+            if(flows.size() == 0) {
+                showMessage("未查询到满足条件的出入库记录");
+            }
+
         } else {
             String errorMessage = event.getMessage();
             Log.i(Constants.TAG, "code = " + event.getCode() + " >" + errorMessage);

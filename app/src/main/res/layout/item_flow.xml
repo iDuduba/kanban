@@ -2,26 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_selector"
     android:layout_marginBottom="1px"
-    android:elevation="5dp">
+    android:elevation="5dp"
+    android:background="@drawable/item_selector">
 
     <TextView
         android:id = "@+id/tv_flow_date"
         style="@style/ListCell"
-        android:textColor="@color/dark_gray"
-        android:layout_weight = "2" />
+        android:layout_weight = "1.5" />
 
     <TextView
         android:id = "@+id/tv_flow_type"
         style="@style/ListCell"
-        android:textColor="@color/dark_gray"
         android:layout_weight = "1.5" />
 
     <TextView
         android:id = "@+id/tv_flow_quantity"
         style="@style/ListCell"
-        android:textColor="@color/dark_gray"
         android:layout_weight = "1" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ package wang.laic.kanban.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +76,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+
+//        Log.i(Constants.TAG, "---> " + holder.getAdapterPosition() + " -> " + holder.itemView.getTag());
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         final Order order = items.get(position);
         holder.itemView.setTag(order);
+
+//        Log.i(Constants.TAG, "===> pos=" + position + " -> " + order);
 
         OrderStatusEnum orderStatus = OrderStatusEnum.valueOf(order.getStatus());
 
@@ -94,14 +105,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         if(orderStatus == OrderStatusEnum.AOG) {
 //            String arrivalDate = String.format(mContext.getString(R.string.prompt_order_arrival_date), KukuUtil.getFormatDate(order.getArrivalDate()));
             holder.tvArrivalDate.setText(KukuUtil.getFormatDate(order.getArrivalDate()));
+            holder.tvArrivalDate.setVisibility(View.VISIBLE);
             holder.tvOrderStatus.setTextColor(mContext.getResources().getColor(R.color.darkRed));
         } else {
             holder.tvArrivalDate.setVisibility(View.GONE);
+            holder.tvOrderStatus.setTextColor(mContext.getResources().getColor(R.color.dark_gray));
         }
         holder.tvOrderStatus.setText(orderStatus.getName());
 
         if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.backgroundColor));
         }
     }
 

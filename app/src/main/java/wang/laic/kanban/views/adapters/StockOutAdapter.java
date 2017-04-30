@@ -77,7 +77,7 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
             }
         });
 
-        holder.txtIndex.setText(String.format("% 2d", position + 1));
+        holder.txtIndex.setText(String.format("%02d", position + 1));
         holder.txtPartModel.setText(String.format("型号:%s", item.getModel()));
         holder.txtPartNo.setText(String.format("零件号:%s", item.getPartNo()));
         holder.txtPartCategory.setText(String.format("小类:%s", item.getCategory()));
@@ -85,6 +85,8 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
 
         if(position % 2 == 0) {
             holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        } else {
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.backgroundColor));
         }
 
 //        holder.txtPartModel.setOnClickListener(new View.OnClickListener() {

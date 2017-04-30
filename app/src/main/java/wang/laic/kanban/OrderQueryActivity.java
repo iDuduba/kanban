@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,11 +17,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import wang.laic.kanban.models.Order;
 import wang.laic.kanban.models.OrderStatusEnum;
 import wang.laic.kanban.network.HttpClient;
 import wang.laic.kanban.network.message.OrdersAnswer;
@@ -92,17 +92,19 @@ public class OrderQueryActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onOrderDetailEvent(OrdersAnswer event) {
         if(event.getCode() == 0) {
+            List<Order> orders = event.getBody();
             mAdapter = new OrderAdapter(this, event.getBody());
             recyclerView.setAdapter(mAdapter);
+            if(orders.size() == 0) {
+                showMessage("未查询到满足条件的订单");
+            }
         } else {
             String errorMessage = event.getMessage();
             Log.i(Constants.TAG, "code = " + event.getCode() + " > " + errorMessage);
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showMessage(errorMessage);
         }
     }
 

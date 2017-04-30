@@ -1,5 +1,7 @@
 package wang.laic.kanban;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,6 +33,8 @@ public class PasswordActivity extends BaseActivity {
     @BindView(R.id.new_password) EditText newPasswordView;
     @BindView(R.id.retry_password) EditText retryPasswordView;
 
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class PasswordActivity extends BaseActivity {
 
         setToolbarTitle(getString(R.string.pwd_change_password));
 
+        preferences = getSharedPreferences(Constants.SHARED_PREFERENCE, MODE_APPEND);
     }
 
     @OnClick(R.id.confir_password)
@@ -99,6 +104,18 @@ public class PasswordActivity extends BaseActivity {
         mProgress.dismiss();
         if(event.getCode() == 0) {
             showMessage("重置密码成功");
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove(Constants.PREFERENCE_LOGIN_TIME);
+            editor.putBoolean(Constants.PREFERENCE_LOGIN_STATUS, false);
+            editor.commit();
+
+            KanbanApplication app = (KanbanApplication)getApplication();
+            app.removeParameter(Constants.KEY_CURRENT_USER);
+
+            Intent intent = new Intent(PasswordActivity.this, LoginActivity.class);
+            startActivity(intent);
+
             finish();
         } else {
             String errorMessage = event.getMessage();

@@ -121,7 +121,7 @@ public class OrderActivity extends BaseActivity {
 
     private void fill(Order order) {
         mOrderStatus = OrderStatusEnum.valueOf(order.getStatus());
-        String xxx = String.format(getString(R.string.prompt_order_status), mOrderStatus.getBackName());
+        String xxx = String.format(getString(R.string.prompt_order_status), mOrderStatus.getName());
         orderStatusView.setText(Html.fromHtml(xxx));
         if(order.getDeliveryDate() != null) {
             xxx = String.format(getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));

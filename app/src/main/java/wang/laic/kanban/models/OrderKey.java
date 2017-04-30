@@ -42,4 +42,12 @@ public class OrderKey {
     public void setSortNo(int sortNo) {
         this.sortNo = sortNo;
     }
+
+    @Override
+    public String toString() {
+        return "OrderKey{" +
+                "orderNo='" + orderNo + '\'' +
+                ", deliveryNumber=" + deliveryNumber +
+                '}';
+    }
 }
