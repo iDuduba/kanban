@@ -24,7 +24,7 @@ android {
                 variant.outputs.each { output ->
                     output.outputFile = new File(
                             output.outputFile.parent + "/${variant.buildType.name}",
-                            "kanban-${variant.buildType.name}-v${variant.versionName}-${variant.productFlavors[0].name}-${releaseTime()}.apk".toLowerCase())
+                            "kanban-${variant.buildType.name}-${variant.versionName}-${variant.productFlavors[0].name}-${variant.versionCode}.apk".toLowerCase())
                 }
             }
         }
@@ -93,3 +93,14 @@ def gitVersionTag() {
 
     return version
 }
+
+
+//applicationVariants.all { variant ->
+//    variant.mergedFlavor.versionCode = gitVersionCode()
+//    variant.mergedFlavor.versionName = gitVersionTag()
+//    variant.outputs.each { output ->
+//        output.outputFile = new File(
+//                output.outputFile.parent + "/${variant.buildType.name}",
+//                "kanban-${variant.buildType.name}-v${variant.versionName}-${variant.productFlavors[0].name}-${releaseTime()}.apk".toLowerCase())
+//    }
+//}

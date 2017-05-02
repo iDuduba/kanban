@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -50,6 +51,7 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.tv_part_stock) TextView tvStock;
     @BindView(R.id.tv_part_description) TextView tvDescription;
     @BindView(R.id.et_quantity) EditText etQuantity;
+    @BindView(R.id.btn_commit) Button btnCommit;
 
     BeepManager beepManager;
 
@@ -137,9 +139,11 @@ public class ScanPartActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueryPartEvent(PartAnswer event) {
         mProgress.dismiss();
+
         if(event.getCode() == 0) {
             List<Part> items = event.getBody();
             if(items != null && items.size() > 0) {
+
                 tvModel.setText(items.get(0).getModel());
                 tvPartNo.setText(items.get(0).getPartNo());
                 tvCategory.setText(items.get(0).getCategory());
@@ -151,6 +155,7 @@ public class ScanPartActivity extends BaseActivity {
                 etQuantity.setSelected(true);
             } else {
                 showMessage("单品不存在");
+                resetProdInfo();
                 viewBarcodeScanner.resume();
             }
         } else {
@@ -176,25 +181,22 @@ public class ScanPartActivity extends BaseActivity {
         viewBarcodeScanner.decodeSingle(callback);
     }
 
-    @OnClick(R.id.btn_resume)
-    public void resume() {
-        viewBarcodeScanner.resume();
-
+    private boolean add() {
         String sStock = tvStock.getText().toString();
         if(sStock == null || sStock.isEmpty()) {
             showMessage("没有单品信息");
-            return;
+            return true;
         }
         String sQuantity = etQuantity.getText().toString();
         if(sQuantity == null || sQuantity.isEmpty()) {
             etQuantity.setError("出库数量不能为空");
-            return;
+            return false;
         }
         int iStock = Integer.parseInt(sStock);
         int iQuantity = Integer.parseInt(sQuantity);
         if(iQuantity > iStock) {
             etQuantity.setError("出库数量(" + sQuantity + ")不能超过库存量(" + sStock + ")");
-            return;
+            return false;
         }
 
         Part part = new Part();
@@ -208,16 +210,34 @@ public class ScanPartActivity extends BaseActivity {
             mOuts.remove(part);
         }
         mOuts.add(part);
+        btnCommit.setText("提交(" + mOuts.size() + ")");
+        return true;
+    }
 
-        resetProdInfo();
+    @OnClick(R.id.btn_resume)
+    public void resume() {
+        boolean resumeScanner = add();
+        if(resumeScanner) {
+            viewBarcodeScanner.resume();
+            resetProdInfo();
+        }
     }
 
     @OnClick(R.id.btn_commit)
     public void commit() {
+        boolean resumeScanner = add();
+        if(resumeScanner) {
+//            viewBarcodeScanner.resume();
+            resetProdInfo();
+        } else {
+            return;
+        }
+
         if(mOuts == null || mOuts.size() == 0) {
             showMessage("没有待出库的单品数据");
             return;
         }
+
         setAppParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
 
         Intent intent = new Intent(this, StockOutActivity.class);
@@ -228,6 +248,7 @@ public class ScanPartActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         viewBarcodeScanner.resume();
 
         mOuts = (List<Part>)getAppParameter(Constants.K_STOCK_OUT_PART_LIST);
@@ -235,7 +256,9 @@ public class ScanPartActivity extends BaseActivity {
             lastText = null;
             mOuts = new ArrayList<>();
         }
+        btnCommit.setText("提交(" + mOuts.size() + ")");
     }
+
 
     @Override
     protected void onPause() {
@@ -247,6 +270,7 @@ public class ScanPartActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        setAppParameter(Constants.K_STOCK_OUT_PART_LIST, null);
     }
 
     @Override

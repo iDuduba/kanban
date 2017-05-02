@@ -11,6 +11,7 @@ public interface Constants {
     String PREFERENCE_LOGIN_STATUS = "kanban.login.status";
     String PREFERENCE_USER = "kanban.user";
     String PREFERENCE_LOGIN_TIME = "kanban.login.time";
+    String PREFERENCE_CURRENT_CUSTOMER = "kanban.current.customer";
 
     String KEY_CURRENT_CUSTOMER = "current.customer.key";
     String KEY_CURRENT_USER = "current.user.key";

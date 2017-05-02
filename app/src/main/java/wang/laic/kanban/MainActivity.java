@@ -59,9 +59,17 @@ public class MainActivity extends AppCompatActivity {
         mCustomersView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "你的选择是：" + customers.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Customer customer = customers.get(position);
+
+                Toast.makeText(MainActivity.this, "你的选择是：" + customer.getName(), Toast.LENGTH_SHORT).show();
+
                 KanbanApplication app = (KanbanApplication)getApplication();
-                app.setParameter(Constants.KEY_CURRENT_CUSTOMER, customers.get(position));
+                app.setParameter(Constants.KEY_CURRENT_CUSTOMER, customer);
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(Constants.PREFERENCE_CURRENT_CUSTOMER, customer.getCode());
+                editor.commit();
+
             }
 
             @Override
@@ -105,15 +113,24 @@ public class MainActivity extends AppCompatActivity {
             ArrayAdapter<Customer> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, customers);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mCustomersView.setAdapter(adapter);
+
+            String customerCode = preferences.getString(Constants.PREFERENCE_CURRENT_CUSTOMER, "");
+            if(!customerCode.isEmpty()) {
+                for(int i = 0; i < customers.size(); i++) {
+                    Customer customer = customers.get(i);
+                    if(customer.getCode().equalsIgnoreCase(customerCode)) {
+                        mCustomersView.setSelection(i);
+                        break;
+                    }
+                }
+            }
         } else {
             Log.i(Constants.TAG, "code = " + event.getCode());
             String errorMessage = event.getMessage();
             if(event.getCode() == 9999) {
                 errorMessage = getString(R.string.error_sever_exception);
             }
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showMessage(errorMessage);
         }
     }
 
@@ -224,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMessage(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
