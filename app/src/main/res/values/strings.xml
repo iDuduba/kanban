@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">客户看板系统</string>
 
-    <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
+    <string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa</string>
+    <!--<string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>-->
     <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.1.157:8888/api</string>-->
