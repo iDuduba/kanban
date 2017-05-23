@@ -12,10 +12,29 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 //        project.ext.set("archivesBaseName", "kanban-" + defaultConfig.versionName);
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("/Users/duduba/Documents/keystore/laic.jks")
+            storePassword "laic2017"
+            keyAlias "laicdev"
+            keyPassword "88888888"
+        }
+        release {
+            storeFile file("/Users/duduba/Documents/keystore/laic.jks")
+            storePassword "laic2017"
+            keyAlias "laicdev"
+            keyPassword "88888888"
+        }
+    }
+
+
     buildTypes {
         debug {
             // 为了不和 release 版本冲突
             applicationIdSuffix ".debug"
+
+            signingConfig signingConfigs.debug
 
             //自定义apk安装包名
             applicationVariants.all { variant ->
@@ -24,33 +43,46 @@ android {
                 variant.outputs.each { output ->
                     output.outputFile = new File(
                             output.outputFile.parent + "/${variant.buildType.name}",
-                            "kanban-${variant.buildType.name}-${variant.versionName}-${variant.productFlavors[0].name}-${variant.versionCode}.apk".toLowerCase())
+                            "kanban-${variant.buildType.name}-${variant.versionName}-${variant.versionCode}.apk".toLowerCase())
                 }
             }
         }
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
             minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            //加载默认混淆配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //签名
+            signingConfig signingConfigs.release
         }
     }
-    productFlavors {
-        dev {
-            manifestPlaceholders = [channel: "dev"]
-        }
-        official {
-            manifestPlaceholders = [channel: "official"]
-        }
-    }
+
+
+//    productFlavors {
+//        dev {
+//            manifestPlaceholders = [channel: "dev"]
+//        }
+//        official {
+//            manifestPlaceholders = [channel: "official"]
+//        }
+//    }
 }
 
+
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //    compile 'com.borax12.materialdaterangepicker:library:1.9'
-//    compile 'de.codecrafters.tableview:tableview:2.5.0'
+    //    compile 'de.codecrafters.tableview:tableview:2.5.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:gridlayout-v7:23.0.0'

@@ -61,21 +61,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
-            android:layout_weight="1"
             android:maxLines="1"
             android:text="no"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/part_desc"
+            android:id="@+id/part_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:maxLines="1"
-            android:text="category"
             android:textSize="12sp" />
 
     </LinearLayout>

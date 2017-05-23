@@ -47,7 +47,7 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.barcode_scanner) DecoratedBarcodeView viewBarcodeScanner;
     @BindView(R.id.tv_part_model) TextView tvModel;
     @BindView(R.id.tv_part_no) TextView tvPartNo;
-    @BindView(R.id.tv_part_category) TextView tvCategory;
+    @BindView(R.id.tv_part_location) TextView tvLocation;
     @BindView(R.id.tv_part_stock) TextView tvStock;
     @BindView(R.id.tv_part_description) TextView tvDescription;
     @BindView(R.id.et_quantity) EditText etQuantity;
@@ -146,7 +146,7 @@ public class ScanPartActivity extends BaseActivity {
 
                 tvModel.setText(items.get(0).getModel());
                 tvPartNo.setText(items.get(0).getPartNo());
-                tvCategory.setText(items.get(0).getCategory());
+                tvLocation.setText(items.get(0).getLocation());
                 tvStock.setText("" + items.get(0).getInvQuantity());
                 tvDescription.setText(items.get(0).getDescription());
 
@@ -202,7 +202,7 @@ public class ScanPartActivity extends BaseActivity {
         Part part = new Part();
         part.setModel(tvModel.getText().toString());
         part.setPartNo(tvPartNo.getText().toString());
-        part.setCategory(tvCategory.getText().toString());
+        part.setLocation(tvLocation.getText().toString());
         part.setQuantity(Integer.parseInt(etQuantity.getText().toString()));
         part.setDescription(tvDescription.getText().toString());
 
@@ -282,7 +282,7 @@ public class ScanPartActivity extends BaseActivity {
     private void resetProdInfo() {
         tvModel.setText(null);
         tvPartNo.setText(null);
-        tvCategory.setText(null);
+        tvLocation.setText(null);
         tvStock.setText(null);
         tvDescription.setText(null);
     }

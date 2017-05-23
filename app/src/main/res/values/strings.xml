@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">客户看板系统</string>
 
-    <string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa</string>
+    <string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa/services/cks</string>
     <!--<string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>-->
     <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
@@ -39,6 +39,7 @@
     <string name="lab_part_category">小类:</string>
     <string name="lab_part_stock">库存量:</string>
     <string name="lab_part_description">描述:</string>
+    <string name="lab_part_location">货架号:</string>
     <string name="lab_out_type">出库类型</string>
     <string name="lab_out_quantity">出库数量</string>
 

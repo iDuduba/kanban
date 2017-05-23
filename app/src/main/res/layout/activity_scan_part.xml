@@ -106,16 +106,6 @@
         <TextView
             android:layout_gravity="right"
             android:textColor="@color/darkRed"
-            android:text="@string/lab_part_category"/>
-
-        <TextView
-            android:layout_gravity="fill"
-            android:id="@+id/tv_part_category"
-            android:layout_columnSpan="3" />
-
-        <TextView
-            android:layout_gravity="right"
-            android:textColor="@color/darkRed"
             android:text="@string/lab_part_description"/>
 
         <TextView
@@ -131,6 +121,16 @@
         <TextView
             android:layout_gravity="fill"
             android:id="@+id/tv_part_stock"
+            android:layout_columnSpan="3" />
+
+        <TextView
+            android:layout_gravity="right"
+            android:textColor="@color/darkRed"
+            android:text="@string/lab_part_location"/>
+
+        <TextView
+            android:layout_gravity="fill"
+            android:id="@+id/tv_part_location"
             android:layout_columnSpan="3" />
     </GridLayout>
 

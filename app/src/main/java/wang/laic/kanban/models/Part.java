@@ -39,6 +39,9 @@ public class Part {
     @Expose(deserialize = true, serialize = false)
     private String description;
 
+    @Expose(deserialize = true, serialize = false)
+    private String location;
+
     public String getModel() {
         return model;
     }
@@ -93,6 +96,14 @@ public class Part {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @Override

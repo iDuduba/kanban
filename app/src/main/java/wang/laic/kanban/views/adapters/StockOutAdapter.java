@@ -80,7 +80,9 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         holder.txtIndex.setText(String.format("%02d", position + 1));
         holder.txtPartModel.setText(String.format("型号:%s", item.getModel()));
         holder.txtPartNo.setText(String.format("零件号:%s", item.getPartNo()));
-        holder.txtPartCategory.setText(String.format("小类:%s", item.getCategory()));
+        if(item.getLocation() != null && item.getLocation().length() > 0) {
+            holder.txtPartLocation.setText(String.format("货架号:%s", item.getLocation()));
+        }
         holder.txtPartQuantity.setText(String.valueOf(item.getQuantity()));
 
         if(position % 2 == 0) {
@@ -131,7 +133,7 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
         @BindView(R.id.tv_index) TextView txtIndex;
         @BindView(R.id.tv_part_model) TextView txtPartModel;
         @BindView(R.id.tv_part_no) TextView txtPartNo;
-        @BindView(R.id.tv_part_category) TextView txtPartCategory;
+        @BindView(R.id.tv_part_location) TextView txtPartLocation;
         @BindView(R.id.tv_part_quantity) TextView txtPartQuantity;
 
         public ViewHolder(View itemView) {

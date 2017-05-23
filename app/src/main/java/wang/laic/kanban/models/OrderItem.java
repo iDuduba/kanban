@@ -28,6 +28,9 @@ public class OrderItem {
     @Expose
     private int arriveQuantity;
 
+    @Expose
+    private String location;
+
     public OrderKey getOrderCompId() {
         return orderCompId;
     }
@@ -74,5 +77,13 @@ public class OrderItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
