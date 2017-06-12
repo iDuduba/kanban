@@ -8,10 +8,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
-    <!--<uses-permission android:name="android.permission.READ_PROFILE" />-->
-    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
-
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
     <application
         android:name=".KanbanApplication"
         android:allowBackup="true"
@@ -22,22 +21,19 @@
 
         <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar"> -->
 
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".LoginActivity" />
-
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ScanPartActivity"
-            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ScanActivity"
             android:clearTaskOnLaunch="true"
@@ -69,6 +65,15 @@
         <activity
             android:name=".FlowActivity"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".ScanLocationActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".ScanPartActivity"
+            android:parentActivityName=".ScanLocationActivity" />
+
     </application>
 
 </manifest>

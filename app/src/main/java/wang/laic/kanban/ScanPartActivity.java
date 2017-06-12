@@ -2,6 +2,7 @@ package wang.laic.kanban;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -44,6 +45,8 @@ import wang.laic.kanban.network.message.Question;
 
 public class ScanPartActivity extends BaseActivity {
 
+    @BindView(R.id.tv_stock_out_info) TextView tvOutInfo;
+
     @BindView(R.id.barcode_scanner) DecoratedBarcodeView viewBarcodeScanner;
     @BindView(R.id.tv_part_model) TextView tvModel;
     @BindView(R.id.tv_part_no) TextView tvPartNo;
@@ -62,7 +65,8 @@ public class ScanPartActivity extends BaseActivity {
 //    private Part mPart = new Part();
     private List<Part> mOuts = new ArrayList<>();
 
-    private OpEnum mOpType = OpEnum.OUT;
+    private int mOpType = OpEnum.OUT.getType();
+    private String mLocation;
 
 
     @Override
@@ -75,6 +79,12 @@ public class ScanPartActivity extends BaseActivity {
         EventBus.getDefault().register(this);
 
         setToolbarTitle(getString(R.string.title_activity_scan_part) + "(" + getCurrentCustomer().getName() + ")");
+
+        mLocation = getIntent().getStringExtra(Constants.KEY_LOCATION);
+        mOpType = getIntent().getIntExtra(Constants.K_STOCK_OUT_OP_TYPE, OpEnum.OUT.getType());
+
+        String xxx = String.format(getString(R.string.lab_out_info), OpEnum.getName(mOpType), mLocation);
+        tvOutInfo.setText(Html.fromHtml(xxx));
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -130,6 +140,7 @@ public class ScanPartActivity extends BaseActivity {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
         body.put("itemCode", model);
+        body.put("location", mLocation);
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);
 
@@ -241,7 +252,8 @@ public class ScanPartActivity extends BaseActivity {
         setAppParameter(Constants.K_STOCK_OUT_PART_LIST, mOuts);
 
         Intent intent = new Intent(this, StockOutActivity.class);
-        intent.putExtra(Constants.K_STOCK_OUT_OP_TYPE, mOpType.getType());
+        intent.putExtra(Constants.KEY_LOCATION, mLocation);
+        intent.putExtra(Constants.K_STOCK_OUT_OP_TYPE, mOpType);
         startActivity(intent);
     }
 
@@ -285,30 +297,6 @@ public class ScanPartActivity extends BaseActivity {
         tvLocation.setText(null);
         tvStock.setText(null);
         tvDescription.setText(null);
-    }
-
-    public void onOpRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_op_out:
-                if (checked) {
-                    mOpType = OpEnum.OUT;
-                }
-                break;
-            case R.id.radio_op_loss:
-                if (checked) {
-                    mOpType = OpEnum.LOSS;
-                }
-                break;
-            case R.id.radio_op_exout:
-                if (checked) {
-                    mOpType = OpEnum.EXOUT;
-                }
-                break;
-        }
     }
 
 }

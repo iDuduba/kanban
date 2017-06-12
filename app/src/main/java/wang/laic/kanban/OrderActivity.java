@@ -43,7 +43,7 @@ public class OrderActivity extends BaseActivity {
     @BindView(R.id.part_list_view) RecyclerView recyclerView;
 
     @BindView(R.id.orderNo) TextView orderNoView;
-    @BindView(R.id.orderTimes) TextView orderTimesView;
+    @BindView(R.id.location) TextView orderLocationView;
     @BindView(R.id.totalAmount) TextView totalAmountView;
     @BindView(R.id.orderStatus) TextView orderStatusView;
     @BindView(R.id.deliveryDate) TextView deliveryDateView;
@@ -73,11 +73,8 @@ public class OrderActivity extends BaseActivity {
         orderKey.setOrderNo(intent.getStringExtra(Constants.KEY_ORDER_NO));
         orderKey.setDeliveryNumber(intent.getIntExtra(Constants.KEY_ORDER_TIMES, 1));
 
-        String xxx = String.format(getString(R.string.prompt_order_no), orderKey.getOrderNo());
+        String xxx = String.format(getString(R.string.prompt_order_no), orderKey.getOrderNo(), orderKey.getDeliveryNumber());
         orderNoView.setText(Html.fromHtml(xxx));
-
-        xxx = String.format(getString(R.string.prompt_order_times), orderKey.getDeliveryNumber());
-        orderTimesView.setText(Html.fromHtml(xxx));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -123,6 +120,11 @@ public class OrderActivity extends BaseActivity {
         mOrderStatus = OrderStatusEnum.valueOf(order.getStatus());
         String xxx = String.format(getString(R.string.prompt_order_status), mOrderStatus.getName());
         orderStatusView.setText(Html.fromHtml(xxx));
+
+        String mOrderLocation = order.getLocation() == null ? "" : order.getLocation();
+        xxx = String.format(getString(R.string.prompt_order_location), mOrderLocation);
+        orderLocationView.setText(Html.fromHtml(xxx));
+
         if(order.getDeliveryDate() != null) {
             xxx = String.format(getString(R.string.prompt_order_delivery_date), KukuUtil.getFormatDate(order.getDeliveryDate()));
             deliveryDateView.setText(Html.fromHtml(xxx));

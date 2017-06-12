@@ -25,4 +25,5 @@ public interface Constants {
     String KEY_ORDER_REVOKED_FLAG = "order.revoked.flag";
     String KEY_ORDER_FLAG = "order.flag";
     String KEY_ORDER_QUERY_FLAG = "order.query.flag";
+    String KEY_LOCATION = "location.key";
 }

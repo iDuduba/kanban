@@ -5,15 +5,15 @@ package wang.laic.kanban.models;
  */
 
 public enum OpEnum {
-    OUT("领料出库", 1),
-    LOSS("盘亏", 2),
-    EXOUT("额外出库",3),
-    PROFIT("盘盈", 4),
-    TRANSIN("调货入库", 5),
-    RETURN("正常退货", 6),
-    IN("采购入库", 7),
-    TRANSOUT("调货出库", 8),
-    RETOUT("供应商退货出库", 9);
+    OUT("领料出库", 6),
+    RETURN("领料退回", 7),
+    LOSS("盘亏", 8),
+    EXOUT("额外出库",9);
+//    PROFIT("盘盈", 4),
+//    TRANSIN("调货入库", 5),
+//    IN("采购入库", 7),
+//    TRANSOUT("调货出库", 8),
+//    RETOUT("供应商退货出库", 9);
 
     private String name;
     private int type;

@@ -43,6 +43,7 @@ public class StockOutActivity extends BaseActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private int mOpType;
+    private String mLocation;
     private List<Part> items = null;
 
     @Override
@@ -65,6 +66,7 @@ public class StockOutActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
+        mLocation = getIntent().getStringExtra(Constants.KEY_LOCATION);
         mOpType = getIntent().getIntExtra(Constants.K_STOCK_OUT_OP_TYPE, OpEnum.OUT.getType());
         tvOpType.setText(OpEnum.getName(mOpType) + " >>> ");
 
@@ -100,6 +102,7 @@ public class StockOutActivity extends BaseActivity {
         Map<String, Object> body = new HashMap<>();
         body.put("customerCode", getCurrentCustomer().getCode());
         body.put("opType", mOpType);
+        body.put("location", mLocation);
         body.put("items", items);
         Question<Map<String, Object>> msg = new Question<>();
         msg.setBody(body);

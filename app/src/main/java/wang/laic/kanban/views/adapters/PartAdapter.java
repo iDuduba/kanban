@@ -52,8 +52,8 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
         holder.txtIndex.setText(String.format("%02d", position + 1));
         holder.txtPartModel.setText(String.format("型号:%s",item.getItemCode()));
         holder.txtPartNo.setText(String.format("零件号:%s",item.getExtpn()));
-        if(item.getLocation() != null) {
-            holder.txtPartLocation.setText(String.format("货架号:%s", item.getLocation()));
+        if(item.getDescription() != null) {
+            holder.txtPartDescription.setText(String.format("描述:%s", item.getDescription()));
         }
         holder.txtPartQuantity.setText(String.valueOf(item.getSendQuantity()));
 
@@ -94,7 +94,7 @@ public class PartAdapter extends RecyclerSwipeAdapter<PartAdapter.ViewHolder> {
         @BindView(R.id.tv_index) TextView txtIndex;
         @BindView(R.id.part_model) TextView txtPartModel;
         @BindView(R.id.part_no) TextView txtPartNo;
-        @BindView(R.id.part_location) TextView txtPartLocation;
+        @BindView(R.id.part_description) TextView txtPartDescription;
         @BindView(R.id.part_quantity) TextView txtPartQuantity;
 
         public ViewHolder(View itemView) {

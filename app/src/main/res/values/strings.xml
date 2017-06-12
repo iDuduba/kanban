@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">客户看板系统</string>
 
-    <string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa/services/cks</string>
-    <!--<string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>-->
+    <!--<string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa/services/cks</string>-->
+    <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
     <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
     <!--<string name="api_base_url">http://192.168.1.157:8888/api</string>-->
@@ -30,6 +30,7 @@
     <string name="lab_version">(管理端)</string>
 
     <string name="lab_op_out">领料出库</string>
+    <string name="lab_op_return">领料退回</string>
     <string name="lab_op_loss">盘亏</string>
     <string name="lab_op_exout">额外出库</string>
 
@@ -39,9 +40,10 @@
     <string name="lab_part_category">小类:</string>
     <string name="lab_part_stock">库存量:</string>
     <string name="lab_part_description">描述:</string>
-    <string name="lab_part_location">货架号:</string>
+    <string name="lab_part_location">工位:</string>
     <string name="lab_out_type">出库类型</string>
     <string name="lab_out_quantity">出库数量</string>
+    <string name="lab_out_info"><![CDATA[<font color="#8B0000">类型:</font>%1$s <font color="#8B0000">工位:</font>%2$s]]></string>
 
 
     <!-- Strings related to login -->
@@ -88,18 +90,19 @@
 
 
     <string name="lab_input_order_no">请扫描或手工输入订单号</string>
+    <string name="lab_input_location_no">请扫描或手工输入工位</string>
     <string name="hint_order_no">订单号</string>
     <string name="hint_order_times">次数</string>
+    <string name="hint_location_no">工位</string>
 
     <string name="prompt_order">订单号:%1$s 发货次数:%2$d</string>
 
-    <string name="prompt_order_no"><![CDATA[<font color="#8B0000">订单号:</font>%s]]></string>
-    <string name="prompt_order_times"><![CDATA[<font color="#8B0000">发货次数:</font>%d]]></string>
+    <string name="prompt_order_no"><![CDATA[<font color="#8B0000">订单号:</font>%1$s-%2$d]]></string>
+    <string name="prompt_order_location"><![CDATA[<font color="#8B0000">工位:</font>%s]]></string>
     <string name="prompt_order_total_amount"><![CDATA[<font color="#8B0000">总数量:</font>%d件]]></string>
     <string name="prompt_order_status"><![CDATA[<font color="#8B0000">状态:</font>%s]]></string>
     <string name="prompt_order_delivery_date"><![CDATA[<font color="#8B0000">发货日期:</font>%s]]></string>
     <string name="prompt_order_arrival_date"><![CDATA[<font color="#8B0000">到货日期:</font>%s]]></string>
-
 
 
     <string name="add">新增</string>

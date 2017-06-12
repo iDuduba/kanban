@@ -21,6 +21,9 @@ public class Order {
     private int status;
 
     @Expose
+    private String location;
+
+    @Expose
     @SerializedName("sendDate")
     private Date deliveryDate;
 
@@ -38,6 +41,14 @@ public class Order {
 
     public void setOrderCompId(OrderKey orderCompId) {
         this.orderCompId = orderCompId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public int getStatus() {

@@ -18,6 +18,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_out_goods)
     public void onStockOut() {
-        Intent intent = new Intent(this, ScanPartActivity.class);
+        Intent intent = new Intent(this, ScanLocationActivity.class);
         startActivity(intent);
     }
 

@@ -63,7 +63,6 @@ android {
         }
     }
 
-
 //    productFlavors {
 //        dev {
 //            manifestPlaceholders = [channel: "dev"]
@@ -125,7 +124,6 @@ def gitVersionTag() {
 
     return version
 }
-
 
 //applicationVariants.all { variant ->
 //    variant.mergedFlavor.versionCode = gitVersionCode()

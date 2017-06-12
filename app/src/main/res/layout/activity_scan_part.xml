@@ -15,36 +15,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
 
-        <RadioGroup
-            android:id="@+id/rg_op_type"
+        <TextView
+            android:id="@+id/tv_stock_out_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp">
-
-            <RadioButton
-                android:id="@+id/radio_op_out"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lab_op_out"
-                android:onClick="onOpRadioButtonClicked"
-                android:checked="true"/>
-
-            <RadioButton
-                android:id="@+id/radio_op_loss"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lab_op_loss"
-                android:onClick="onOpRadioButtonClicked" />
-
-            <RadioButton
-                android:id="@+id/radio_op_exout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lab_op_exout"
-                android:onClick="onOpRadioButtonClicked" />
-        </RadioGroup>
+            android:layout_marginLeft="8dp"
+            android:text="hahah"/>
 
         <EditText
             android:id="@+id/et_quantity"
