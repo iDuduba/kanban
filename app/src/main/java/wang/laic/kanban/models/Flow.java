@@ -16,7 +16,7 @@ public class Flow {
     private int opType;
 
     @Expose
-    private int quantity;
+    private double quantity;
 
     public Date getOpDate() {
         return opDate;
@@ -34,11 +34,11 @@ public class Flow {
         this.opType = opType;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 }

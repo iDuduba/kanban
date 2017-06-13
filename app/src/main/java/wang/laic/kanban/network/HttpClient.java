@@ -66,6 +66,7 @@ public class HttpClient {
 
         gson = new GsonBuilder()
                 .registerTypeAdapter(Integer.class, new IntegerSerializer())
+                .registerTypeAdapter(Double.class, new DoubleSerializer())
                 .serializeNulls()
                 .excludeFieldsWithoutExposeAnnotation()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -180,6 +181,11 @@ public class HttpClient {
 
     private class IntegerSerializer implements JsonSerializer<Integer> {
         public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.toString());
+        }
+    }
+    private class DoubleSerializer implements JsonSerializer<Double> {
+        public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
             return new JsonPrimitive(src.toString());
         }
     }

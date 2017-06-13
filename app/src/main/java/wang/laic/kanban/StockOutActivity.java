@@ -68,14 +68,15 @@ public class StockOutActivity extends BaseActivity {
 
         mLocation = getIntent().getStringExtra(Constants.KEY_LOCATION);
         mOpType = getIntent().getIntExtra(Constants.K_STOCK_OUT_OP_TYPE, OpEnum.OUT.getType());
-        tvOpType.setText(OpEnum.getName(mOpType) + " >>> ");
+        String xxx = String.format("%s:%s >>>", mLocation, OpEnum.getName(mOpType));
+        tvOpType.setText(xxx);
 
         items = (List<Part>)getAppParameter(Constants.K_STOCK_OUT_PART_LIST);
 
-        String xxx = String.format(getString(R.string.prompt_stock_out_1), items.size());
+        xxx = String.format(getString(R.string.prompt_stock_out_1), items.size());
         itemSizeView.setText(Html.fromHtml(xxx));
 
-        int sum = 0;
+        double sum = 0;
         for(Part part : items) {
             sum += part.getQuantity();
         }

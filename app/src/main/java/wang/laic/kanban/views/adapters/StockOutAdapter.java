@@ -73,16 +73,15 @@ public class StockOutAdapter extends RecyclerSwipeAdapter<StockOutAdapter.ViewHo
                 mDataset.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mDataset.size());
-//                Toast.makeText(view.getContext(), "Deleted " + viewHolder.textViewData.getText().toString() + "!", Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.txtIndex.setText(String.format("%02d", position + 1));
         holder.txtPartModel.setText(String.format("型号:%s", item.getModel()));
         holder.txtPartNo.setText(String.format("零件号:%s", item.getPartNo()));
-        if(item.getLocation() != null && item.getLocation().length() > 0) {
-            holder.txtPartLocation.setText(String.format("货架号:%s", item.getLocation()));
-        }
+//        if(item.getLocation() != null && item.getLocation().length() > 0) {
+//            holder.txtPartLocation.setText(String.format("工位:%s", item.getLocation()));
+//        }
         holder.txtPartQuantity.setText(String.valueOf(item.getQuantity()));
 
         if(position % 2 == 0) {

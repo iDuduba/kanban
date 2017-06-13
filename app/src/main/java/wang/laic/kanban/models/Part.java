@@ -26,18 +26,22 @@ public class Part {
     private String partNo;
 
     @Expose(deserialize = true, serialize = false)
+    private int itemType = 0;
+
+    @Expose(deserialize = true, serialize = false)
+    @SerializedName("itemTypeName")
     private String category;
 
     private int opType = OpEnum.OUT.getType();
 
     @Expose(deserialize = false, serialize = true)
-    private int quantity = 0;
+    private double quantity = 0;
 
     @Expose(deserialize = true, serialize = false)
-    private int invQuantity = 0;
+    private double invQuantity = 0;
 
     @Expose(deserialize = true, serialize = false)
-    private String description;
+    private double safeStock = 0;
 
     @Expose(deserialize = true, serialize = false)
     private String location;
@@ -58,6 +62,14 @@ public class Part {
         this.partNo = partNo;
     }
 
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -66,11 +78,11 @@ public class Part {
         this.category = category;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -82,20 +94,20 @@ public class Part {
         this.opType = opType;
     }
 
-    public int getInvQuantity() {
+    public double getInvQuantity() {
         return invQuantity;
     }
 
-    public void setInvQuantity(int invQuantity) {
+    public void setInvQuantity(double invQuantity) {
         this.invQuantity = invQuantity;
     }
 
-    public String getDescription() {
-        return description;
+    public double getSafeStock() {
+        return safeStock;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSafeStock(double safeStock) {
+        this.safeStock = safeStock;
     }
 
     public String getLocation() {

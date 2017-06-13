@@ -33,7 +33,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="4dp"
             android:maxLines="1"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="16sp"
             android:hint="@string/lab_out_quantity" />
 
@@ -83,16 +83,6 @@
         <TextView
             android:layout_gravity="right"
             android:textColor="@color/darkRed"
-            android:text="@string/lab_part_description"/>
-
-        <TextView
-            android:layout_gravity="fill"
-            android:id="@+id/tv_part_description"
-            android:layout_columnSpan="3" />
-
-        <TextView
-            android:layout_gravity="right"
-            android:textColor="@color/darkRed"
             android:text="@string/lab_part_stock"/>
 
         <TextView
@@ -103,11 +93,11 @@
         <TextView
             android:layout_gravity="right"
             android:textColor="@color/darkRed"
-            android:text="@string/lab_part_location"/>
+            android:text="@string/lab_part_safe_stock"/>
 
         <TextView
             android:layout_gravity="fill"
-            android:id="@+id/tv_part_location"
+            android:id="@+id/tv_part_safe_stock"
             android:layout_columnSpan="3" />
     </GridLayout>
 

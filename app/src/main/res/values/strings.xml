@@ -3,9 +3,6 @@
 
     <!--<string name="api_base_url">http://erp.hansa-flex.com.cn/Hansa/services/cks</string>-->
     <string name="api_base_url">http://erp.hansa-flex.com.cn/HFTest/services/cks</string>
-    <!--<string name="api_base_url">http://192.168.58.1:8888/api</string>-->
-    <!--<string name="api_base_url">http://192.168.0.105:8888/api</string>-->
-    <!--<string name="api_base_url">http://192.168.1.157:8888/api</string>-->
     <string name="api_app_id">88888888</string>
     <string name="api_secret_key">DgAewDold3V8fiUwxE0ANjjdinuQCSar</string>
 
@@ -39,6 +36,7 @@
     <string name="lab_part_sku">零件号:</string>
     <string name="lab_part_category">小类:</string>
     <string name="lab_part_stock">库存量:</string>
+    <string name="lab_part_safe_stock">安全库存:</string>
     <string name="lab_part_description">描述:</string>
     <string name="lab_part_location">工位:</string>
     <string name="lab_out_type">出库类型</string>
@@ -86,7 +84,7 @@
     <string name="prompt_delete">删除</string>
 
     <string name="prompt_stock_out_1"><![CDATA[<font color="#8B0000">共计:</font>%d项]]></string>
-    <string name="prompt_stock_out_2"><![CDATA[<font color="#8B0000">总数量:</font>%d件]]></string>
+    <string name="prompt_stock_out_2"><![CDATA[<font color="#8B0000">总数量:</font>%.1f]]></string>
 
 
     <string name="lab_input_order_no">请扫描或手工输入订单号</string>

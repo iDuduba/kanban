@@ -50,9 +50,8 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.barcode_scanner) DecoratedBarcodeView viewBarcodeScanner;
     @BindView(R.id.tv_part_model) TextView tvModel;
     @BindView(R.id.tv_part_no) TextView tvPartNo;
-    @BindView(R.id.tv_part_location) TextView tvLocation;
+    @BindView(R.id.tv_part_safe_stock) TextView tvSafeStock;
     @BindView(R.id.tv_part_stock) TextView tvStock;
-    @BindView(R.id.tv_part_description) TextView tvDescription;
     @BindView(R.id.et_quantity) EditText etQuantity;
     @BindView(R.id.btn_commit) Button btnCommit;
 
@@ -157,9 +156,8 @@ public class ScanPartActivity extends BaseActivity {
 
                 tvModel.setText(items.get(0).getModel());
                 tvPartNo.setText(items.get(0).getPartNo());
-                tvLocation.setText(items.get(0).getLocation());
+                tvSafeStock.setText("" + items.get(0).getSafeStock());
                 tvStock.setText("" + items.get(0).getInvQuantity());
-                tvDescription.setText(items.get(0).getDescription());
 
                 etQuantity.setSelectAllOnFocus(true);
                 etQuantity.requestFocus();
@@ -203,19 +201,17 @@ public class ScanPartActivity extends BaseActivity {
             etQuantity.setError("出库数量不能为空");
             return false;
         }
-        int iStock = Integer.parseInt(sStock);
-        int iQuantity = Integer.parseInt(sQuantity);
-        if(iQuantity > iStock) {
-            etQuantity.setError("出库数量(" + sQuantity + ")不能超过库存量(" + sStock + ")");
+        double invQuantity = Double.parseDouble(sStock);
+        double quantity = Double.parseDouble(sQuantity);
+        if(quantity > invQuantity) {
+            etQuantity.setError("出库数量(" + quantity + ")不能超过库存量(" + invQuantity + ")");
             return false;
         }
 
         Part part = new Part();
         part.setModel(tvModel.getText().toString());
         part.setPartNo(tvPartNo.getText().toString());
-        part.setLocation(tvLocation.getText().toString());
-        part.setQuantity(Integer.parseInt(etQuantity.getText().toString()));
-        part.setDescription(tvDescription.getText().toString());
+        part.setQuantity(quantity);
 
         if(mOuts.contains(part)) {
             mOuts.remove(part);
@@ -294,9 +290,8 @@ public class ScanPartActivity extends BaseActivity {
     private void resetProdInfo() {
         tvModel.setText(null);
         tvPartNo.setText(null);
-        tvLocation.setText(null);
+        tvSafeStock.setText(null);
         tvStock.setText(null);
-        tvDescription.setText(null);
     }
 
 }
