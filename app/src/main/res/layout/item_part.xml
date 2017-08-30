@@ -57,11 +57,21 @@
         android:layout_marginBottom="8dp">
 
         <TextView
+            android:id="@+id/part_shelf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:text="@string/lab_part_shelf"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/part_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:maxLines="1"
+            android:layout_marginLeft="8dp"
             android:text="no"
             android:textSize="12sp" />
 

@@ -43,7 +43,7 @@
         <!-- android:theme="@style/AppCompatCaptureTheme" -->
         <activity
             android:name=".StockOutActivity"
-            android:parentActivityName=".ScanPartActivity" />
+            android:parentActivityName=".ScanLocationActivity" />
         <activity
             android:name=".PasswordActivity"
             android:parentActivityName=".MainActivity">

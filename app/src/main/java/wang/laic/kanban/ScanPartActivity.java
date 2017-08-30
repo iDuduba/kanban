@@ -50,6 +50,7 @@ public class ScanPartActivity extends BaseActivity {
     @BindView(R.id.barcode_scanner) DecoratedBarcodeView viewBarcodeScanner;
     @BindView(R.id.tv_part_model) TextView tvModel;
     @BindView(R.id.tv_part_no) TextView tvPartNo;
+    @BindView(R.id.tv_part_shelf) TextView tvShelf;
     @BindView(R.id.tv_part_safe_stock) TextView tvSafeStock;
     @BindView(R.id.tv_part_stock) TextView tvStock;
     @BindView(R.id.et_quantity) EditText etQuantity;
@@ -156,6 +157,7 @@ public class ScanPartActivity extends BaseActivity {
 
                 tvModel.setText(items.get(0).getModel());
                 tvPartNo.setText(items.get(0).getPartNo());
+                tvShelf.setText(items.get(0).getShelfNo());
                 tvSafeStock.setText("" + items.get(0).getSafeStock());
                 tvStock.setText("" + items.get(0).getInvQuantity());
 
@@ -218,6 +220,7 @@ public class ScanPartActivity extends BaseActivity {
         }
         mOuts.add(part);
         btnCommit.setText("提交(" + mOuts.size() + ")");
+
         return true;
     }
 
@@ -251,6 +254,8 @@ public class ScanPartActivity extends BaseActivity {
         intent.putExtra(Constants.KEY_LOCATION, mLocation);
         intent.putExtra(Constants.K_STOCK_OUT_OP_TYPE, mOpType);
         startActivity(intent);
+
+        finish();
     }
 
     @Override
@@ -290,8 +295,10 @@ public class ScanPartActivity extends BaseActivity {
     private void resetProdInfo() {
         tvModel.setText(null);
         tvPartNo.setText(null);
+        tvShelf.setText(null);
         tvSafeStock.setText(null);
         tvStock.setText(null);
+        etQuantity.setText(null);
     }
 
 }

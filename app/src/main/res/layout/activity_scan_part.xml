@@ -83,6 +83,16 @@
         <TextView
             android:layout_gravity="right"
             android:textColor="@color/darkRed"
+            android:text="@string/lab_part_shelf"/>
+
+        <TextView
+            android:layout_gravity="fill"
+            android:id="@+id/tv_part_shelf"
+            android:layout_columnSpan="3" />
+
+        <TextView
+            android:layout_gravity="right"
+            android:textColor="@color/darkRed"
             android:text="@string/lab_part_stock"/>
 
         <TextView

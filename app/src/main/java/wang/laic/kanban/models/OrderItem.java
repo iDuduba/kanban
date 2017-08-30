@@ -31,6 +31,10 @@ public class OrderItem {
     @Expose
     private String location;
 
+    @Expose
+    private String shelfNo; // 货架号
+
+
     public OrderKey getOrderCompId() {
         return orderCompId;
     }
@@ -85,5 +89,13 @@ public class OrderItem {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getShelfNo() {
+        return shelfNo;
+    }
+
+    public void setShelfNo(String shelfNo) {
+        this.shelfNo = shelfNo;
     }
 }

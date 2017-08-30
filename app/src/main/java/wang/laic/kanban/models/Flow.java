@@ -16,6 +16,9 @@ public class Flow {
     private int opType;
 
     @Expose
+    private String opName;
+
+    @Expose
     private double quantity;
 
     public Date getOpDate() {
@@ -32,6 +35,14 @@ public class Flow {
 
     public void setOpType(int opType) {
         this.opType = opType;
+    }
+
+    public String getOpName() {
+        return opName;
+    }
+
+    public void setOpName(String opName) {
+        this.opName = opName;
     }
 
     public double getQuantity() {

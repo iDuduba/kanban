@@ -58,7 +58,7 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
         Flow item = items.get(position);
 
         holder.tvFlowDate.setText(KukuUtil.getFormatDate(item.getOpDate()));
-        holder.tvFlowType.setText(OpEnum.getName(item.getOpType()));
+        holder.tvFlowType.setText(item.getOpName());
         holder.tvFlowQuantity.setText("" + item.getQuantity());
 
         if(position % 2 == 0) {

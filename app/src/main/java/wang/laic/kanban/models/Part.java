@@ -46,6 +46,9 @@ public class Part {
     @Expose(deserialize = true, serialize = false)
     private String location;
 
+    @Expose(deserialize = true, serialize = false)
+    private String shelfNo; // 货架号
+
     public String getModel() {
         return model;
     }
@@ -116,6 +119,14 @@ public class Part {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getShelfNo() {
+        return shelfNo;
+    }
+
+    public void setShelfNo(String shelfNo) {
+        this.shelfNo = shelfNo;
     }
 
     @Override
